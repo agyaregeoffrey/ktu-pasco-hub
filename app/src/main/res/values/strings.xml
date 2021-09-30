@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">KtuPascoHub</string>
+    <string name="login_vector">Login Vector</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="get_started">Get Started</string>
+    <string name="sign_in_to_our_platform">Sign in to our platform and get access to Past Questions from various departments</string>
+    <string name="web_client_id">500579789173-b5djn8l28133bactchhc2rrft6u7j2ba.apps.googleusercontent.com</string>
+    <string name="account_selection">Profile Selection</string>
+    <string name="select_a_profile_to_continue">Select a profile to continue.</string>
+    <string name="class_representative">Class Representative</string>
+    <string name="student">Student</string>
+    <string name="someone0420182818d_ktu_edu_gh">someone0420182818d@ktu.edu.gh</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="class_rep_admin">Class Rep (Admin)</string>
 </resources>
