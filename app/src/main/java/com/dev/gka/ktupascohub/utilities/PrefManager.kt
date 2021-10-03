@@ -16,7 +16,7 @@ class PrefManager private constructor() {
     }
 
     fun getDisplayName(): String? {
-        return sharedPreferences!!.getString("name", "")
+        return sharedPreferences!!.getString("name", null)
     }
 
     fun getImageUrl(): String? {

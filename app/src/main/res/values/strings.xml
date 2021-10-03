@@ -9,8 +9,29 @@
     <string name="select_a_profile_to_continue">Select a profile to continue.</string>
     <string name="class_representative">Class Representative</string>
     <string name="student">Student</string>
-    <string name="someone0420182818d_ktu_edu_gh">someone0420182818d@ktu.edu.gh</string>
-    <string name="password">Password</string>
+    <string name="someone0420182818d_ktu_edu_gh">Enter Email</string>
+    <string name="password">Enter Password</string>
     <string name="sign_in">Sign In</string>
     <string name="class_rep_admin">Class Rep (Admin)</string>
+    <string name="enter_a_valid_email">Enter a valid email</string>
+    <string name="character_cannot_be_less_than_8">Characters cannot be less than 8</string>
+    <string name="fab_upload">Fab upload</string>
+    <string name="profile">Profile</string>
+    <string name="upload_file">Upload File</string>
+    <string name="select_lecturer">Select Lecturer</string>
+    <string name="select_course">Select Course</string>
+    <string name="select_semester">Select Semester</string>
+    <string name="select_year">Select Year</string>
+    <string name="upload">Upload</string>
+    <string name="attach_file">Attach File</string>
+    <string name="select_pdf">Select File</string>
+    <string name="notifications">Notifications</string>
+    <string name="search">Search</string>
+    <string name="download_file">Download File</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="ktu_pasco_hub">\@ KTU Pasco Hub</string>
+    <string name="enter_name">Enter name</string>
+
+    <string name="year">Level: %1$s</string>
+    <string name="semester">Semester: %1$s</string>
 </resources>

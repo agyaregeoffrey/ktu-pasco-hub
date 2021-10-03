@@ -13,7 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KtuPascoHub">
         <activity
-            android:name=".activities.RepActivity"
+            android:name=".activities.ProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.StudentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.rep.UploadActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.rep.RepActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.rep.RepSignInActivity"
             android:exported="true" />
         <activity
             android:name=".activities.AccountSelectionActivity"
@@ -28,7 +43,7 @@
             android:name=".activities.PastQuestionsActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true" />
     </application>
 

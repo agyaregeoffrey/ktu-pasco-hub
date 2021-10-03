@@ -1,20 +1,16 @@
-package com.dev.gka.ktupascohub
+package com.dev.gka.ktupascohub.activities
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.dev.gka.ktupascohub.activities.PastQuestionsActivity
+import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.databinding.ActivityMainBinding
 import com.dev.gka.ktupascohub.models.Student
-import com.dev.gka.ktupascohub.utilities.Constants
-import com.dev.gka.ktupascohub.utilities.Constants.RC_SIGN_IN
 import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -66,6 +62,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onStart() {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        if (firebaseUser != null) {
+            startActivity(Intent(this, StudentActivity::class.java))
+            finish()
+        }
+        super.onStart()
+    }
+
     private fun firebaseAuthWithGoogle(idToken: String) {
         binding.progressHorizontal.visibility = View.VISIBLE
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -79,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     if (student != null) {
                         PrefManager.getInstance(applicationContext).saveUserInfo(student)
                     }
-                    startActivity(Intent(this, PastQuestionsActivity::class.java))
+                    startActivity(Intent(this, StudentActivity::class.java))
                     finish()
                 }
             }.addOnFailureListener {
