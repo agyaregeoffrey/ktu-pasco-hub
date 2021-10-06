@@ -1,15 +1,14 @@
 <resources>
-    <string name="app_name">KtuPascoHub</string>
+    <string name="app_name">Ktu Pasco Hub</string>
     <string name="login_vector">Login Vector</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="get_started">Get Started</string>
-    <string name="sign_in_to_our_platform">Sign in to our platform and get access to Past Questions from various departments</string>
+    <string name="sign_in_to_our_platform">Sign in to our platform and get access to Past Questions from Computer Science Department</string>
     <string name="web_client_id">500579789173-b5djn8l28133bactchhc2rrft6u7j2ba.apps.googleusercontent.com</string>
     <string name="account_selection">Profile Selection</string>
     <string name="select_a_profile_to_continue">Select a profile to continue.</string>
     <string name="class_representative">Class Representative</string>
     <string name="student">Student</string>
-    <string name="someone0420182818d_ktu_edu_gh">Enter Email</string>
+    <string name="someone0420182818d_ktu_edu_gh">Enter Student Email</string>
     <string name="password">Enter Password</string>
     <string name="sign_in">Sign In</string>
     <string name="class_rep_admin">Class Rep (Admin)</string>
@@ -25,13 +24,15 @@
     <string name="upload">Upload</string>
     <string name="attach_file">Attach File</string>
     <string name="select_pdf">Select File</string>
-    <string name="notifications">Notifications</string>
+    <string name="refresh">Refresh</string>
     <string name="search">Search</string>
     <string name="download_file">Download File</string>
     <string name="sign_out">Sign Out</string>
     <string name="ktu_pasco_hub">\@ KTU Pasco Hub</string>
-    <string name="enter_name">Enter name</string>
+    <string name="enter_name">Enter Name</string>
 
     <string name="year">Level: %1$s</string>
     <string name="semester">Semester: %1$s</string>
+    <string name="welcome_to_ktu_pasco_hub">KTU Pasco Hub</string>
+    <string name="get_started">Get Started</string>
 </resources>

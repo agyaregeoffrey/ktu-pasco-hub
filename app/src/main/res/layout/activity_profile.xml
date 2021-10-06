@@ -82,6 +82,7 @@
         <TextView
             android:id="@+id/text_display_name"
             style="@style/CardTextCaption"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_16"
@@ -92,12 +93,25 @@
         <TextView
             android:id="@+id/text_email"
             style="@style/BodyText"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@+id/text_display_name"
             app:layout_constraintTop_toBottomOf="@+id/text_display_name"
             tools:text="iamgamah@gmail.com" />
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1.5dp"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_marginEnd="32dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_email"
+            app:layout_constraintTop_toBottomOf="@id/text_email" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -115,12 +129,12 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_email"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
             app:srcCompat="@drawable/ktu_logo" />
 
         <TextView

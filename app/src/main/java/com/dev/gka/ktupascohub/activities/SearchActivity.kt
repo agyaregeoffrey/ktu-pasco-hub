@@ -2,22 +2,22 @@ package com.dev.gka.ktupascohub.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
 import com.dev.gka.ktupascohub.databinding.ActivitySearchBinding
 import com.dev.gka.ktupascohub.models.Course
-import com.dev.gka.ktupascohub.utilities.Constants
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
 import com.google.firebase.firestore.FirebaseFirestore
-import timber.log.Timber
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var courses: MutableList<Course>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
@@ -25,7 +25,29 @@ class SearchActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         firestore = FirebaseFirestore.getInstance()
-        firestoreData(binding.rvSearch, binding.indicatorSearch, firestore)
+
+        courses = firestoreData(
+            this.applicationContext,
+            binding.rvSearch,
+            binding.indicatorSearch,
+            firestore
+        )
+
+
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                search(s.toString())
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -35,6 +57,30 @@ class SearchActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun search(s: String) {
+        val results = mutableListOf<Course>()
+        for (course in courses) {
+            if (course.lecturer?.lowercase()?.contains(s) == true
+                || course.title?.lowercase()?.contains(s) == true
+                || course.level?.lowercase()?.contains(s) == true
+                || course.semester?.lowercase()?.contains(s) == true
+            ) {
+                results.add(course)
+            }
+        }
+
+        binding.rvSearch.apply {
+            adapter = CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener {
+
+            }, results)
+            layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
         }
     }
 }

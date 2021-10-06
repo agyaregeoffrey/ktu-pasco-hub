@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import com.dev.gka.ktupascohub.models.Student
+import com.dev.gka.ktupascohub.utilities.Constants.IS_FIRST_TIME
+import com.dev.gka.ktupascohub.utilities.Constants.IS_REP
+import com.dev.gka.ktupascohub.utilities.Constants.IS_STUDENT
 
 class PrefManager private constructor() {
 
@@ -12,7 +15,22 @@ class PrefManager private constructor() {
         editor!!.putString("imageUrl", student.imageUrl.toString())
         editor!!.putString("email", student.email)
         editor!!.putString("phone", student.phone)
-        editor!!.commit()
+        editor!!.apply()
+    }
+
+    fun welcomeActivityOpened(b: Boolean) {
+        editor!!.putBoolean(IS_FIRST_TIME, b)
+        editor!!.apply()
+    }
+
+    fun repSignUpStatus(b: Boolean) {
+        editor!!.putBoolean(IS_REP, b)
+        editor!!.apply()
+    }
+
+    fun studentSignInStatus(b: Boolean) {
+        editor!!.putBoolean(IS_STUDENT, b)
+        editor!!.apply()
     }
 
     fun getDisplayName(): String? {
@@ -30,6 +48,19 @@ class PrefManager private constructor() {
     fun getUserPhone(): String? {
         return sharedPreferences!!.getString("phone", "No Record Found")
     }
+
+    fun hasRun(): Boolean {
+        return sharedPreferences!!.getBoolean(IS_FIRST_TIME, false)
+    }
+
+    fun hasRepSignedIn(): Boolean {
+        return sharedPreferences!!.getBoolean(IS_REP, false)
+    }
+
+    fun hasStudentSignedIn(): Boolean {
+        return sharedPreferences!!.getBoolean(IS_STUDENT, false)
+    }
+
 
     companion object {
         private val prefManager = PrefManager()

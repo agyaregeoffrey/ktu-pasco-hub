@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_notifications"
-        android:title="@string/notifications"
-        android:icon="@drawable/ic_baseline_notifications_none_24"
+    <item android:id="@+id/menu_refresh"
+        android:title="@string/refresh"
+        android:icon="@drawable/ic_baseline_refresh_24"
         app:showAsAction="never|withText" />
 
     <item android:id="@+id/menu_profile"

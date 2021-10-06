@@ -8,9 +8,10 @@ import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.activities.rep.RepSignInActivity
 import com.dev.gka.ktupascohub.activities.rep.RepActivity
 import com.dev.gka.ktupascohub.databinding.ActivityAccountSelectionBinding
+import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.auth.FirebaseAuth
 
-class AccountSelectionActivity : AppCompatActivity() {
+class AccountSelectionActivity : BaseActivity() {
     private lateinit var binding: ActivityAccountSelectionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,20 +20,13 @@ class AccountSelectionActivity : AppCompatActivity() {
         binding.buttonClassRep.setOnClickListener {
             val repIntent = Intent(this, RepSignInActivity::class.java)
             startActivity(repIntent)
+            finish()
         }
 
         binding.buttonStudent.setOnClickListener {
             val studentIntent = Intent(this, MainActivity::class.java)
             startActivity(studentIntent)
-        }
-    }
-
-    override fun onStart() {
-        val firebaseUser = FirebaseAuth.getInstance().currentUser
-        if (firebaseUser != null) {
-            startActivity(Intent(this, RepActivity::class.java))
             finish()
         }
-        super.onStart()
     }
 }

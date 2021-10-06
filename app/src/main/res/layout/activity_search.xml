@@ -30,6 +30,7 @@
         android:background="@drawable/search_bar_layout"
         android:backgroundTint="#16344C"
         android:ems="10"
+        android:inputType="none"
         android:fontFamily="sans-serif"
         android:hint="@string/search"
         android:paddingStart="20dp"

@@ -1,26 +1,19 @@
 package com.dev.gka.ktupascohub.activities.rep
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dev.gka.ktupascohub.R
+import com.dev.gka.ktupascohub.activities.BaseActivity
 import com.dev.gka.ktupascohub.activities.ProfileActivity
 import com.dev.gka.ktupascohub.activities.SearchActivity
-import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
 import com.dev.gka.ktupascohub.databinding.ActivityRepBinding
-import com.dev.gka.ktupascohub.models.Course
-import com.dev.gka.ktupascohub.utilities.Constants.COURSES
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
-import com.dev.gka.ktupascohub.utilities.Helpers.papers
 import com.google.firebase.firestore.FirebaseFirestore
-import timber.log.Timber
 
-class RepActivity : AppCompatActivity() {
+class RepActivity : BaseActivity() {
     private lateinit var binding: ActivityRepBinding
     private lateinit var firestore: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +22,7 @@ class RepActivity : AppCompatActivity() {
         setSupportActionBar(binding.includedLayout.toolbarRep)
 
         firestore = FirebaseFirestore.getInstance()
-        firestoreData(
-            binding.includedLayout.content.rvRepQuestions,
-            binding.includedLayout.content.indicatorRepLoad,
-            firestore
-        )
+        initFirebaseData()
         binding.includedLayout.fabUpload.setOnClickListener {
             val intent = Intent(this, UploadActivity::class.java)
             startActivity(intent)
@@ -53,7 +42,8 @@ class RepActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
-            R.id.menu_notifications -> {
+            R.id.menu_refresh -> {
+                initFirebaseData()
                 true
             }
             R.id.menu_profile -> {
@@ -63,6 +53,15 @@ class RepActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun initFirebaseData() {
+        firestoreData(
+            this.applicationContext,
+            binding.includedLayout.content.rvRepQuestions,
+            binding.includedLayout.content.indicatorRepLoad,
+            firestore
+        )
     }
 
 //    fun firestoreData() {

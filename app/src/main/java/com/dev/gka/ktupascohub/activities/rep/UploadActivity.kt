@@ -12,23 +12,32 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.dev.gka.ktupascohub.R
+import com.dev.gka.ktupascohub.activities.BaseActivity
 import com.dev.gka.ktupascohub.databinding.ActivityUploadBinding
 import com.dev.gka.ktupascohub.models.Course
+import com.dev.gka.ktupascohub.models.PushNotification
 import com.dev.gka.ktupascohub.utilities.Constants.COURSES
 import com.dev.gka.ktupascohub.utilities.Constants.STORAGE_PATH
+import com.dev.gka.ktupascohub.utilities.Constants.TOPIC
 import com.dev.gka.ktupascohub.utilities.Helpers.courses
 import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
+import com.dev.gka.ktupascohub.utilities.RetrofitInstance
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 
-class UploadActivity : AppCompatActivity() {
+class UploadActivity : BaseActivity() {
     private lateinit var binding: ActivityUploadBinding
     private lateinit var fireStoreDatabase: FirebaseFirestore
     private lateinit var firebaseStorage: FirebaseStorage
@@ -55,6 +64,7 @@ class UploadActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         fireStoreDatabase = Firebase.firestore
         firebaseStorage = Firebase.storage
+//        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         initializeDropDown()
 
@@ -69,6 +79,10 @@ class UploadActivity : AppCompatActivity() {
             val semester = binding.semesterSelection.editText?.text.toString()
             if (isFormValidated(it)) {
                 uploadFile(title, lecturer, year, semester)
+                PushNotification(Course("New Past Question Uploaded", title, null, null, null), TOPIC)
+                    .also { push ->
+                        sendNotification(push)
+                    }
             }
         }
     }
@@ -183,5 +197,18 @@ class UploadActivity : AppCompatActivity() {
                 binding.indicatorUpload.visibility = View.GONE
                 Timber.e("File upload failed: ${it.message}")
             }
+    }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if (response.isSuccessful) {
+                Timber.d("Response: ${Gson().toJson(response)}")
+            } else {
+                Timber.d(response.errorBody().toString())
+            }
+        }catch (e: Exception) {
+            Timber.e(e.toString())
+        }
     }
 }

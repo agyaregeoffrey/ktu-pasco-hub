@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -78,12 +78,13 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    val student = user?.let {
-                        Student(it.displayName, it.email, it.phoneNumber, it.photoUrl)
+                    val prefs = PrefManager.getInstance(this)
+                    if (user != null) {
+                        val student = Student(user.displayName, user.email, null, null)
+                        prefs.saveUserInfo(student)
                     }
-                    if (student != null) {
-                        PrefManager.getInstance(applicationContext).saveUserInfo(student)
-                    }
+                    prefs.welcomeActivityOpened(true)
+                    prefs.studentSignInStatus(true)
                     startActivity(Intent(this, StudentActivity::class.java))
                     finish()
                 }
