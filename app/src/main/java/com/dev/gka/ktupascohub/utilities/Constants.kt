@@ -12,6 +12,7 @@ object Constants {
     // Firebase Paths
     const val STORAGE_PATH = "pastquestions"
     const val COURSES = "courses"
+    const val USERS = "users"
     const val REPS = "reps"
 
     // Broadcast Event

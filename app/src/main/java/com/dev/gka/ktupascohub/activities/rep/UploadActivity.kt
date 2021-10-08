@@ -75,11 +75,12 @@ class UploadActivity : BaseActivity() {
         binding.buttonUpload.setOnClickListener {
             val title = binding.courseSelection.editText?.text.toString()
             val lecturer = binding.lecturerSelection.editText?.text.toString()
+            val level = binding.levelSelection.editText?.text.toString()
             val year = binding.yearSelection.editText?.text.toString()
             val semester = binding.semesterSelection.editText?.text.toString()
             if (isFormValidated(it)) {
-                uploadFile(title, lecturer, year, semester)
-                PushNotification(Course("New Past Question Uploaded", title, null, null, null), TOPIC)
+                uploadFile(title, lecturer, level, semester, year)
+                PushNotification(Course("New Past Question Uploaded", title, null, null, null, null), TOPIC)
                     .also { push ->
                         sendNotification(push)
                     }
@@ -103,6 +104,7 @@ class UploadActivity : BaseActivity() {
         val lecturers: MutableList<String> = mutableListOf()
         val levels: MutableList<String> = mutableListOf("300", "200", "100")
         val semesters: MutableList<String> = mutableListOf("First", "Second")
+        val years: MutableList<String> = mutableListOf("2015", "2016", "2017", "2018", "2019", "2020")
 
         for (course in courses) {
             titles.add(course.title!!)
@@ -113,13 +115,15 @@ class UploadActivity : BaseActivity() {
             ArrayAdapter(applicationContext, R.layout.drop_down_list_item, lecturers)
         val titleAdapter = ArrayAdapter(applicationContext, R.layout.drop_down_list_item, titles)
         val levelAdapter = ArrayAdapter(applicationContext, R.layout.drop_down_list_item, levels)
+        val yearAdapter = ArrayAdapter(applicationContext, R.layout.drop_down_list_item, years)
         val semesterAdapter =
             ArrayAdapter(applicationContext, R.layout.drop_down_list_item, semesters)
 
 
         binding.lecturerDropdown.setAdapter(lecturerAdapter)
         binding.courseDropdown.setAdapter(titleAdapter)
-        binding.yearDropdown.setAdapter(levelAdapter)
+        binding.levelDropdown.setAdapter(levelAdapter)
+        binding.yearDropdown.setAdapter(yearAdapter)
         binding.semesterDropdown.setAdapter(semesterAdapter)
     }
 
@@ -163,7 +167,7 @@ class UploadActivity : BaseActivity() {
         return isValid
     }
 
-    private fun uploadFile(title: String, lecturer: String, level: String, semester: String) {
+    private fun uploadFile(title: String, lecturer: String, level: String, semester: String, year: String) {
         binding.buttonUpload.isEnabled = false
         binding.indicatorUpload.visibility = View.VISIBLE
         val storageReference: StorageReference =
@@ -179,11 +183,12 @@ class UploadActivity : BaseActivity() {
                 while (!uri.isComplete);
                 val url: Uri? = uri.result
                 val course = Course(
-                    title,
                     lecturer,
+                    title,
                     level,
+                    year,
                     semester,
-                    url.toString()
+                    url.toString(),
                 )
                 fireStoreDatabase
                     .collection(COURSES)

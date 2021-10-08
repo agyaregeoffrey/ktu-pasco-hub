@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.databinding.ActivityStudentBinding
@@ -22,13 +23,14 @@ class StudentActivity : BaseActivity() {
 
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         firestore = FirebaseFirestore.getInstance()
-
+        initFirebaseData()
     }
 
     private fun initFirebaseData() {
         firestoreData(
             this.applicationContext,
             binding.rvStudent,
+            binding.imageNoTaskStudent,
             binding.indicatorStudent,
             firestore
         )

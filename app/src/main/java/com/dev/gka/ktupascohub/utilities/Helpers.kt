@@ -10,11 +10,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
 import com.dev.gka.ktupascohub.models.Course
+import com.dev.gka.ktupascohub.utilities.Constants.COURSES
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
@@ -34,39 +36,54 @@ object Helpers {
     }
 
     // Dummy data
-    val papers = listOf(
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Solomon Anab", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Solomon Anab", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-    )
+//    val papers = listOf(
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "First", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "First", "Semester 2", null),
+//        Course("Solomon Anab", "Data Structures & Algorithm", "2020", "First","Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Solomon Anab", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
+//    )
 
     val courses = listOf(
-        Course("Florence Agyeiwaa", "CSD 233 Social, Legal & Ethical Issues in Computing", "300", "First", null),
-        Course("Sefakor Awurama Adabunu", "CSD 307 Operations Research I",  "300", "First", null),
-        Course("Martin Offei", "CSD 313 Server Concepts",  "300", "First", null),
-        Course("Bright Anibreka", "CSD 317 System Administration",  "300", "First", null),
-        Course("Benjamin Kwoffie", "CSD 319 IT & the Contemporary Manager (Entrepreneurship)", "300", "First", null)
+        Course(
+            "Florence Agyeiwaa",
+            "CSD 233 Social, Legal & Ethical Issues in Computing",
+            "300",
+            null,
+            "First",
+            null
+        ),
+        Course("Sefakor Awurama Adabunu", "CSD 307 Operations Research 1", "300", null, "First", null),
+        Course("Martin Offei", "CSD 313 Server Concepts", "300", null, "First", null),
+        Course("Bright Anibreka", "CSD 317 System Administration", null, "300", "First", null),
+        Course(
+            "Benjamin Kwoffie",
+            "CSD 319 IT & the Contemporary Manager (Entrepreneurship)",
+            "300",
+            null,
+            "First",
+            null
+        )
     )
 
     fun firestoreData(
         context: Context,
         recyclerView: RecyclerView,
+        imageView: ImageView,
         progressIndicator: LinearProgressIndicator,
         firestore: FirebaseFirestore
     ): MutableList<Course> {
         val courses = mutableListOf<Course>()
         progressIndicator.visibility = View.VISIBLE
-        firestore.collection(Constants.COURSES)
+        firestore.collection(COURSES)
             .get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -76,35 +93,55 @@ object Helpers {
                             documentSnapshot.getString("lecturer"),
                             documentSnapshot.getString("title"),
                             documentSnapshot.getString("level"),
-                            documentSnapshot.getString("semester"), null
+                            documentSnapshot.getString("year"),
+                            documentSnapshot.getString("semester"),
+                            null
                         )
                         course.file = documentSnapshot.getString("file")
                         courses.add(course)
                     }
-                    recyclerView.apply {
-                        adapter =
-                            CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
-                                requestStoragePermission(context, object : PermissionsCallback {
-                                    @RequiresApi(Build.VERSION_CODES.M)
-                                    override fun onPermissionRequest(granted: Boolean) {
-                                        if (granted) {
-                                            if (hasNetworkConnected(context))
-                                                downloadFile(context, course.title!!, course.file!!)
-                                            else showSnack(recyclerView, "An active internet connection is required to download file")
-                                        } else
-                                            showSnack(
-                                                recyclerView,
-                                                "Storage permission is required to download file."
-                                            )
-                                    }
+                    if (courses.isEmpty()) {
+                        imageView.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                    } else {
+                        imageView.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        recyclerView.apply {
+                            adapter =
+                                CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
+                                    requestStoragePermission(context, object : PermissionsCallback {
+                                        @RequiresApi(Build.VERSION_CODES.M)
+                                        override fun onPermissionRequest(granted: Boolean) {
+                                            if (granted) {
+                                                if (hasNetworkConnected(context)) {
+                                                    showSnack(
+                                                        recyclerView,
+                                                        "Downloading ${course.title}"
+                                                    )
+                                                    downloadFile(
+                                                        context,
+                                                        course.title!!,
+                                                        course.file!!
+                                                    )
+                                                } else showSnack(
+                                                    recyclerView,
+                                                    "An active internet connection is required to download file"
+                                                )
+                                            } else
+                                                showSnack(
+                                                    recyclerView,
+                                                    "Storage permission is required to download file."
+                                                )
+                                        }
 
-                                })
-                            }, courses)
-                        layoutManager = LinearLayoutManager(
-                            context,
-                            LinearLayoutManager.VERTICAL,
-                            false
-                        )
+                                    })
+                                }, courses)
+                            layoutManager = LinearLayoutManager(
+                                context,
+                                LinearLayoutManager.VERTICAL,
+                                false
+                            )
+                        }
                     }
                 }
             }.addOnFailureListener {

@@ -76,14 +76,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/year_selection"
+            android:id="@+id/level_selection"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="0dp"
-            android:hint="@string/select_year"
+            android:hint="@string/select_level"
             app:hintTextColor="#616161"
             android:maxLines="1"
             app:layout_constraintEnd_toEndOf="@id/course_selection"
@@ -91,7 +91,7 @@
             app:layout_constraintTop_toBottomOf="@id/course_selection">
 
             <AutoCompleteTextView
-                android:id="@+id/year_dropdown"
+                android:id="@+id/level_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none" />
@@ -107,12 +107,33 @@
             android:hint="@string/select_semester"
             app:hintTextColor="#616161"
             android:maxLines="1"
-            app:layout_constraintEnd_toEndOf="@id/year_selection"
-            app:layout_constraintStart_toStartOf="@id/year_selection"
-            app:layout_constraintTop_toBottomOf="@id/year_selection">
+            app:layout_constraintEnd_toEndOf="@id/level_selection"
+            app:layout_constraintStart_toStartOf="@id/level_selection"
+            app:layout_constraintTop_toBottomOf="@id/level_selection">
 
             <AutoCompleteTextView
                 android:id="@+id/semester_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/year_selection"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/select_year"
+            app:hintTextColor="#616161"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="@id/semester_selection"
+            app:layout_constraintStart_toStartOf="@id/semester_selection"
+            app:layout_constraintTop_toBottomOf="@id/semester_selection">
+
+            <AutoCompleteTextView
+                android:id="@+id/year_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none" />
@@ -128,9 +149,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="0dp"
             android:text="@string/attach_file"
-            app:layout_constraintEnd_toEndOf="@id/semester_selection"
-            app:layout_constraintStart_toStartOf="@id/semester_selection"
-            app:layout_constraintTop_toBottomOf="@id/semester_selection" />
+            app:layout_constraintEnd_toEndOf="@id/year_selection"
+            app:layout_constraintStart_toStartOf="@id/year_selection"
+            app:layout_constraintTop_toBottomOf="@id/year_selection" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_upload"
@@ -140,9 +161,9 @@
             android:layout_marginTop="90dp"
             android:enabled="true"
             android:text="@string/upload_file"
-            app:layout_constraintEnd_toEndOf="@+id/semester_selection"
-            app:layout_constraintStart_toStartOf="@+id/semester_selection"
-            app:layout_constraintTop_toBottomOf="@+id/semester_selection" />
+            app:layout_constraintEnd_toEndOf="@+id/year_selection"
+            app:layout_constraintStart_toStartOf="@+id/year_selection"
+            app:layout_constraintTop_toBottomOf="@+id/year_selection" />
 
         <TextView
             android:id="@+id/text_view_file_name"
@@ -150,9 +171,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/semester_selection"
-            app:layout_constraintStart_toStartOf="@+id/semester_selection"
-            app:layout_constraintTop_toBottomOf="@id/semester_selection"
+            app:layout_constraintEnd_toEndOf="@+id/year_selection"
+            app:layout_constraintStart_toStartOf="@+id/year_selection"
+            app:layout_constraintTop_toBottomOf="@id/year_selection"
             tools:text="File name.pdf" />
 
         <ImageView

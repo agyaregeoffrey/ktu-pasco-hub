@@ -45,7 +45,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:maxLines="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent"
@@ -54,7 +53,7 @@
             <View
                 android:id="@+id/divider"
                 android:layout_width="0dp"
-                android:layout_height="1.5dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="@dimen/dimen_8"
                 android:background="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_course_title"
@@ -69,10 +68,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
+                android:maxLines="1"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_download"
                 app:layout_constraintStart_toStartOf="@+id/divider"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
                 tools:text="Course title" />
+
+            <TextView
+                android:id="@+id/text_view_level"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="300"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_course_title"
+                app:layout_constraintStart_toStartOf="@+id/text_view_course_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_course_title"
+                style="@style/CardText" />
 
             <TextView
                 android:id="@+id/text_view_year"
@@ -80,9 +91,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="@+id/text_view_course_title"
-                app:layout_constraintStart_toStartOf="@+id/text_view_course_title"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_course_title"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_level"
+                app:layout_constraintStart_toStartOf="@+id/text_view_level"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_level"
                 tools:text="2020" />
 
             <TextView

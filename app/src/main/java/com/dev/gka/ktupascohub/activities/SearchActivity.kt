@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
 import com.dev.gka.ktupascohub.databinding.ActivitySearchBinding
 import com.dev.gka.ktupascohub.models.Course
+import com.dev.gka.ktupascohub.utilities.Helpers
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -29,6 +31,7 @@ class SearchActivity : BaseActivity() {
         courses = firestoreData(
             this.applicationContext,
             binding.rvSearch,
+            binding.imageNoTaskSearch,
             binding.indicatorSearch,
             firestore
         )
@@ -72,15 +75,26 @@ class SearchActivity : BaseActivity() {
             }
         }
 
-        binding.rvSearch.apply {
-            adapter = CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener {
-
-            }, results)
-            layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
+        if (results.isEmpty()) {
+            binding.textSearchStatus.visibility = View.VISIBLE
+            binding.rvSearch.visibility = View.GONE
+        } else {
+            binding.textSearchStatus.visibility = View.GONE
+            binding.rvSearch.visibility = View.VISIBLE
+            binding.rvSearch.apply {
+                adapter = CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
+                    Helpers.downloadFile(
+                        applicationContext,
+                        course.title!!,
+                        course.file!!
+                    )
+                }, results)
+                layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            }
         }
     }
 }

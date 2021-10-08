@@ -10,6 +10,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -43,6 +44,7 @@ class FirebaseService : FirebaseMessagingService() {
             .setContentText(message.data["title"])
             .setSmallIcon(R.drawable.ic_baseline_message_24)
             .setLargeIcon(Bitmap.createBitmap(bitmap))
+            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()

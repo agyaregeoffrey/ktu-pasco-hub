@@ -59,6 +59,7 @@ class RepActivity : BaseActivity() {
         firestoreData(
             this.applicationContext,
             binding.includedLayout.content.rvRepQuestions,
+            binding.includedLayout.content.imageNoTaskRep,
             binding.includedLayout.content.indicatorRepLoad,
             firestore
         )

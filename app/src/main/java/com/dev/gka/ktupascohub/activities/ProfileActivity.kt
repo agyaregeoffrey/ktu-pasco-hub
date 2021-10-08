@@ -81,6 +81,7 @@ class ProfileActivity : BaseActivity() {
         preferences.edit().clear().apply()
 
         val intent = Intent(LOG_OUT)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 }

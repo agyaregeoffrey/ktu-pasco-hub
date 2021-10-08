@@ -15,6 +15,7 @@ import com.dev.gka.ktupascohub.models.Rep
 import com.dev.gka.ktupascohub.models.Student
 import com.dev.gka.ktupascohub.utilities.Constants.COURSES
 import com.dev.gka.ktupascohub.utilities.Constants.REPS
+import com.dev.gka.ktupascohub.utilities.Constants.USERS
 import com.dev.gka.ktupascohub.utilities.Helpers.hasNetworkConnected
 import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
 import com.dev.gka.ktupascohub.utilities.PrefManager
@@ -96,6 +97,7 @@ class RepSignInActivity : BaseActivity() {
                     finish()
                 }
             }.addOnFailureListener {
+                showSnack(binding.imageView, "Sign up failed. Try again later.")
                 Timber.e("Rep sign up failed: ${it.message}")
                 binding.indicatorRep.visibility = View.GONE
             }
@@ -109,14 +111,15 @@ class RepSignInActivity : BaseActivity() {
                     nameFromFirebase()
                 }
             }.addOnFailureListener {
-                Timber.e("Rep sign in failed: ${it.message}")
+                showSnack(binding.imageView, "Sign in failed. Try again later.")
+                Timber.e("Rep sign in failed: $it")
                 binding.indicatorRep.visibility = View.GONE
             }
     }
 
     private fun nameToFirebase(name: String, uid: String) {
         val rep = Rep(name, uid)
-        firestore.collection(COURSES)
+        firestore.collection(USERS)
             .document(REPS)
             .collection(uid)
             .add(rep)
@@ -125,7 +128,7 @@ class RepSignInActivity : BaseActivity() {
     private fun nameFromFirebase() {
         val user = auth.currentUser
         if (user != null) {
-            firestore.collection(COURSES)
+            firestore.collection(USERS)
                 .document(REPS)
                 .collection(user.uid)
                 .get().addOnCompleteListener { task ->

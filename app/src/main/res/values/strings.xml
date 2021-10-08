@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ktu Pasco Hub</string>
+    <string name="app_name">KTU Pasco Hub</string>
     <string name="login_vector">Login Vector</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_to_our_platform">Sign in to our platform and get access to Past Questions from Computer Science Department</string>
@@ -20,7 +20,7 @@
     <string name="select_lecturer">Select Lecturer</string>
     <string name="select_course">Select Course</string>
     <string name="select_semester">Select Semester</string>
-    <string name="select_year">Select Year</string>
+    <string name="select_year">Select Year Written</string>
     <string name="upload">Upload</string>
     <string name="attach_file">Attach File</string>
     <string name="select_pdf">Select File</string>
@@ -31,8 +31,11 @@
     <string name="ktu_pasco_hub">\@ KTU Pasco Hub</string>
     <string name="enter_name">Enter Name</string>
 
-    <string name="year">Level: %1$s</string>
+    <string name="level">Level: %1$s</string>
     <string name="semester">Semester: %1$s</string>
+    <string name="year">Year: %1$s</string>
     <string name="welcome_to_ktu_pasco_hub">KTU Pasco Hub</string>
     <string name="get_started">Get Started</string>
+    <string name="course_not_found">Course Not Found</string>
+    <string name="select_level">Select Level</string>
 </resources>
