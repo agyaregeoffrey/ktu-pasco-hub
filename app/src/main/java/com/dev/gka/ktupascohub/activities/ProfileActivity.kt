@@ -44,6 +44,7 @@ class ProfileActivity : BaseActivity() {
         val pref = PrefManager.getInstance(applicationContext)
         binding.textDisplayName.text = pref.getDisplayName() ?: "Student Name"
         binding.textEmail.text = pref.getEmail()
+        binding.textLevel.text = getString(R.string.level, pref.getLevel())
 
         val initials = StringBuilder()
 
@@ -81,7 +82,6 @@ class ProfileActivity : BaseActivity() {
         preferences.edit().clear().apply()
 
         val intent = Intent(LOG_OUT)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 }

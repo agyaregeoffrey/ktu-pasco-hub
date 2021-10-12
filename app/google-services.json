@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "500579789173-vk1hre7vucvv0uhd7ba40qg5obukfpn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.activedev.projecttocloud",
+            "certificate_hash": "577da2aa332be4231c896d4c564e5af95b225cfb"
+          }
+        },
+        {
           "client_id": "500579789173-b5djn8l28133bactchhc2rrft6u7j2ba.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -117,6 +125,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "500579789173-1h0fmljpnn6f68eg7ugql1g9ddseisml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.gka.ktupascohub",
+            "certificate_hash": "577da2aa332be4231c896d4c564e5af95b225cfb"
+          }
+        },
         {
           "client_id": "500579789173-834orocdijgaropm5aier4v8q6n5spe2.apps.googleusercontent.com",
           "client_type": 1,

@@ -22,8 +22,10 @@
     <string name="select_semester">Select Semester</string>
     <string name="select_year">Select Year Written</string>
     <string name="upload">Upload</string>
-    <string name="attach_file">Attach File</string>
-    <string name="select_pdf">Select File</string>
+    <string name="attach_question">Attach Question (Pdf less than 25M)</string>
+    <string name="attach_solution">Attach Solution (Pdf less than 25M)</string>
+    <string name="select_question">Select Question</string>
+    <string name="select_solution">Select Solution</string>
     <string name="refresh">Refresh</string>
     <string name="search">Search</string>
     <string name="download_file">Download File</string>
@@ -38,4 +40,33 @@
     <string name="get_started">Get Started</string>
     <string name="course_not_found">Course Not Found</string>
     <string name="select_level">Select Level</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="field_cannot_be_empty">Field cannot be empty</string>
+    <string name="sign_failed">Sign in failed. Please try again later</string>
+    <string name="sign_up_failed">Sign up failed. Please try again later.</string>
+    <string name="active_internet_needed">An active internet connection is required to sign in</string>
+    <string name="admin_account_required">Admin account required to log in</string>
+    <string name="help_us_provide_you_with_relevant">Help us provide you with relevant past questions by selecting a level below</string>
+    <string name="finish">Finish</string>
+    <string name="download_question">Download Question</string>
+    <string name="download_solution">Download Solution</string>
+    <string name="course_title">Course Title</string>
+    <string name="lecturer_s_name">Lecturer\'s Name</string>
+    <string name="det_level">Level</string>
+    <string name="det_semester">Semester</string>
+    <string name="paper">Paper</string>
+    <string name="no_solution_available">No solution available for this paper</string>
+    <string name="solution_disclaimer">This file you are about to download is not 100% guaranteed to be correct hence, do not rely solely on this material</string>
+    <string name="download_solution_title">Download Solution - Caution</string>
+    <string name="cancel">Cancel</string>
+    <string name="review">Review</string>
+    <string name="are_you_sure">Are you sure you want to download selected file?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirm_details">Confirm Details</string>
+    <string name="selected_question_paper">Selected Question Paper</string>
+    <string name="selected_solution">Selected Solution</string>
+    <string name="show_similar_papers">Similar Papers</string>
 </resources>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.FileDetailsActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_details"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="@string/paper" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_32"
+                    android:layout_marginTop="@dimen/dimen_16"
+                    android:layout_marginEnd="@dimen/dimen_32"
+                    style="@style/TextInputLayoutStyle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_title"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/course_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_lecturer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    style="@style/TextInputLayoutStyle"
+                    app:layout_constraintEnd_toEndOf="@id/text_input_title"
+                    app:layout_constraintStart_toStartOf="@id/text_input_title"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_lecturer"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/lecturer_s_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_level"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    style="@style/TextInputLayoutStyle"
+                    app:layout_constraintEnd_toEndOf="@id/text_input_lecturer"
+                    app:layout_constraintStart_toStartOf="@id/text_input_lecturer"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_lecturer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_level"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/select_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_year"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    style="@style/TextInputLayoutStyle"
+                    app:layout_constraintEnd_toEndOf="@id/text_input_level"
+                    app:layout_constraintStart_toStartOf="@id/text_input_level"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_level">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_year"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/det_level"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_semester"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    style="@style/TextInputLayoutStyle"
+                    app:layout_constraintEnd_toEndOf="@id/text_input_year"
+                    app:layout_constraintStart_toStartOf="@id/text_input_year"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_year">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_semester"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/det_semester"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_download_question"
+                    style="@style/ButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    android:text="@string/download_question"
+                    app:layout_constraintEnd_toEndOf="@+id/text_input_semester"
+                    app:layout_constraintStart_toStartOf="@+id/text_input_semester"
+                    app:layout_constraintTop_toBottomOf="@id/text_input_semester" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_download_solution"
+                    style="@style/ButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    android:text="@string/download_solution"
+                    app:layout_constraintEnd_toEndOf="@+id/button_download_question"
+                    app:layout_constraintStart_toStartOf="@+id/button_download_question"
+                    app:layout_constraintTop_toBottomOf="@id/button_download_question" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

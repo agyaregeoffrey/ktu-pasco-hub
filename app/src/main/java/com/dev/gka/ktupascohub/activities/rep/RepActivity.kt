@@ -10,7 +10,11 @@ import com.dev.gka.ktupascohub.activities.BaseActivity
 import com.dev.gka.ktupascohub.activities.ProfileActivity
 import com.dev.gka.ktupascohub.activities.SearchActivity
 import com.dev.gka.ktupascohub.databinding.ActivityRepBinding
+import com.dev.gka.ktupascohub.utilities.Helpers
+import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
+import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
+import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RepActivity : BaseActivity() {
@@ -23,6 +27,9 @@ class RepActivity : BaseActivity() {
 
         firestore = FirebaseFirestore.getInstance()
         initFirebaseData()
+
+        registerForContextMenu(binding.includedLayout.content.rvRepQuestions)
+
         binding.includedLayout.fabUpload.setOnClickListener {
             val intent = Intent(this, UploadActivity::class.java)
             startActivity(intent)
@@ -55,13 +62,24 @@ class RepActivity : BaseActivity() {
         }
     }
 
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_similar -> {
+                showSnack(binding.root, "Menu Clicked")
+                true
+            }
+            else -> super.onContextItemSelected(item)
+        }
+    }
+
     private fun initFirebaseData() {
+        val level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
         firestoreData(
             this.applicationContext,
             binding.includedLayout.content.rvRepQuestions,
             binding.includedLayout.content.imageNoTaskRep,
             binding.includedLayout.content.indicatorRepLoad,
-            firestore
+            firestore, level
         )
     }
 

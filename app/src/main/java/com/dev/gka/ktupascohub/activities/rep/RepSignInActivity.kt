@@ -3,20 +3,21 @@ package com.dev.gka.ktupascohub.activities.rep
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.util.Patterns
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.activities.BaseActivity
+import com.dev.gka.ktupascohub.activities.LevelSelectionActivity
 import com.dev.gka.ktupascohub.databinding.ActivityRepSignInBinding
-import com.dev.gka.ktupascohub.models.Rep
 import com.dev.gka.ktupascohub.models.Student
-import com.dev.gka.ktupascohub.utilities.Constants.COURSES
-import com.dev.gka.ktupascohub.utilities.Constants.REPS
-import com.dev.gka.ktupascohub.utilities.Constants.USERS
+import com.dev.gka.ktupascohub.utilities.Constants.FINISH
 import com.dev.gka.ktupascohub.utilities.Helpers.hasNetworkConnected
+import com.dev.gka.ktupascohub.utilities.Helpers.isEmailValid
+import com.dev.gka.ktupascohub.utilities.Helpers.isPasswordValid
+import com.dev.gka.ktupascohub.utilities.Helpers.nameFromFirebase
+import com.dev.gka.ktupascohub.utilities.Helpers.nameToFirebase
 import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
 import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.auth.FirebaseAuth
@@ -44,7 +45,7 @@ class RepSignInActivity : BaseActivity() {
             val password = binding.editTextPassword.text.toString()
             if (isFormValidated()) {
                 if (!hasNetworkConnected(this))
-                    showSnack(it, "An active internet connection is required to sign in")
+                    showSnack(it, getString(R.string.active_internet_needed))
                 else {
 //                    createUserAccount(name, email, password)
                     signInUser(email, password)
@@ -61,7 +62,7 @@ class RepSignInActivity : BaseActivity() {
 
 
         binding.editTextEmail.setOnKeyListener { _, _, _ ->
-            if (isEmailValid(binding.editTextEmail.text)) {
+            if (isEmailValid(binding.editTextEmail.text, binding.editTextEmail)) {
                 binding.textInputClassRepEmail.error = null
             }
             false
@@ -83,21 +84,25 @@ class RepSignInActivity : BaseActivity() {
                     binding.indicatorRep.visibility = View.GONE
                     val user = auth.currentUser
                     if (user != null) {
-                        nameToFirebase(name, user.uid)
+                        nameToFirebase(firestore, name, user.uid)
                         val student = Student(name, user.email, null, null)
                         Timber.d("$student")
 
                         val prefs = PrefManager.getInstance(this)
-                        prefs.welcomeActivityOpened(b = true)
                         prefs.saveUserInfo(student)
+                        prefs.accountSelectionOpened(b = true)
                         prefs.repSignUpStatus(b = true)
                     }
-                    val intent = Intent(this, RepActivity::class.java)
+                    val broadcast = Intent(FINISH)
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcast)
+                    val intent = Intent(this, LevelSelectionActivity::class.java)
                     startActivity(intent)
                     finish()
+                } else {
+                    showSnack(binding.imageView, getString(R.string.sign_up_failed))
                 }
             }.addOnFailureListener {
-                showSnack(binding.imageView, "Sign up failed. Try again later.")
+                showSnack(binding.imageView, getString(R.string.sign_up_failed))
                 Timber.e("Rep sign up failed: ${it.message}")
                 binding.indicatorRep.visibility = View.GONE
             }
@@ -107,51 +112,24 @@ class RepSignInActivity : BaseActivity() {
         binding.indicatorRep.visibility = View.VISIBLE
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
+                nameFromFirebase(auth, firestore, this)
                 if (task.isSuccessful) {
-                    nameFromFirebase()
+                    val prefs = PrefManager.getInstance(this)
+                    prefs.accountSelectionOpened(b = true)
+                    prefs.repSignUpStatus(b = true)
+                    val broadcast = Intent(FINISH)
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcast)
+                    val intent = Intent(this, LevelSelectionActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    showSnack(binding.imageView, getString(R.string.sign_failed))
                 }
             }.addOnFailureListener {
-                showSnack(binding.imageView, "Sign in failed. Try again later.")
+                showSnack(binding.imageView, getString(R.string.sign_failed))
                 Timber.e("Rep sign in failed: $it")
                 binding.indicatorRep.visibility = View.GONE
             }
-    }
-
-    private fun nameToFirebase(name: String, uid: String) {
-        val rep = Rep(name, uid)
-        firestore.collection(USERS)
-            .document(REPS)
-            .collection(uid)
-            .add(rep)
-    }
-
-    private fun nameFromFirebase() {
-        val user = auth.currentUser
-        if (user != null) {
-            firestore.collection(USERS)
-                .document(REPS)
-                .collection(user.uid)
-                .get().addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val document = task.result.documents[0]
-                        val name = document.getString("name")
-                        val student = Student(name, user.email, null, null)
-                        Timber.d("$student")
-
-                        val prefs = PrefManager.getInstance(this)
-                        prefs.welcomeActivityOpened(true)
-                        prefs.saveUserInfo(student)
-                        prefs.repSignUpStatus(true)
-                        binding.indicatorRep.visibility = View.GONE
-                        val intent = Intent(this, RepActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                        Timber.d("Name: $name")
-                    }
-                }.addOnFailureListener {
-                    Timber.d("Rep : $it")
-                }
-        }
     }
 
     private fun isFormValidated(): Boolean {
@@ -159,39 +137,33 @@ class RepSignInActivity : BaseActivity() {
 
         if (binding.editTextName.text?.isEmpty() == true) {
             isValid = false
-            binding.textInputName.error = "Field cannot be empty"
+            binding.textInputName.error = getString(R.string.field_cannot_be_empty)
         }
 
-        if (!isEmailValid(binding.editTextEmail.text)) {
+        if (!isEmailValid(binding.editTextEmail.text, binding.editTextEmail)) {
             isValid = false
             binding.textInputClassRepEmail.error = getString(R.string.enter_a_valid_email)
+        }
+
+        if (binding.editTextEmail.text?.contains("rep", true) != true) {
+            isValid = false
+            binding.textInputClassRepEmail.error = getString(R.string.admin_account_required)
         }
 
         if (!isPasswordValid(binding.editTextPassword.text)) {
             isValid = false
             binding.textInputClassRepPassword.error =
-                getString(R.string.character_cannot_be_less_than_8)
+                getString(R.string.field_cannot_be_empty)
         }
 
         return isValid
     }
 
-    private fun isNameValid(name: String): Boolean {
-        return false
-    }
-    private fun isEmailValid(email: Editable?): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(binding.editTextEmail.text.toString()).matches()
-                && email != null
-    }
-
-    private fun isPasswordValid(password: Editable?): Boolean {
-        return password != null && password.length >= 8
-    }
 
     override fun onStart() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         if (firebaseUser != null) {
-            startActivity(Intent(this, RepActivity::class.java))
+            startActivity(Intent(this, LevelSelectionActivity::class.java))
             finish()
         }
         super.onStart()

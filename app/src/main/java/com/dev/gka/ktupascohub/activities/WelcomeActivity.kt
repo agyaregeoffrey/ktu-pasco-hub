@@ -19,7 +19,7 @@ class WelcomeActivity : BaseActivity() {
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             val pref = PrefManager.getInstance(this)
-            val isOpened = pref.hasRun()
+            val isOpened = pref.hasAccountSelectionRun()
             val rep = pref.hasRepSignedIn()
             val stud = pref.hasStudentSignedIn()
             if (isOpened) {

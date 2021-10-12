@@ -1,6 +1,5 @@
 package com.dev.gka.ktupascohub.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,7 +12,9 @@ import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
 import com.dev.gka.ktupascohub.databinding.ActivitySearchBinding
 import com.dev.gka.ktupascohub.models.Course
 import com.dev.gka.ktupascohub.utilities.Helpers
+import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
+import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchActivity : BaseActivity() {
@@ -27,13 +28,14 @@ class SearchActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         firestore = FirebaseFirestore.getInstance()
+        val level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
 
         courses = firestoreData(
             this.applicationContext,
             binding.rvSearch,
             binding.imageNoTaskSearch,
             binding.indicatorSearch,
-            firestore
+            firestore, level
         )
 
 
@@ -86,7 +88,7 @@ class SearchActivity : BaseActivity() {
                     Helpers.downloadFile(
                         applicationContext,
                         course.title!!,
-                        course.file!!
+                        course.question!!
                     )
                 }, results)
                 layoutManager = LinearLayoutManager(

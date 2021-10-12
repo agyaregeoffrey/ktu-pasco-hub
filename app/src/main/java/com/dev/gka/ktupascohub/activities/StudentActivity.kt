@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.databinding.ActivityStudentBinding
 import com.dev.gka.ktupascohub.utilities.Constants.TOPIC
+import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
+import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -27,12 +29,13 @@ class StudentActivity : BaseActivity() {
     }
 
     private fun initFirebaseData() {
+        val level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
         firestoreData(
             this.applicationContext,
             binding.rvStudent,
             binding.imageNoTaskStudent,
             binding.indicatorStudent,
-            firestore
+            firestore, level!!
         )
     }
 

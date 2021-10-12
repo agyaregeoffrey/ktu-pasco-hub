@@ -5,24 +5,24 @@
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="BodyText">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="CardTextCaption" parent="BodyText">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CardText" parent="BodyText">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textAlignment">textStart</item>
     </style>
 
@@ -34,7 +34,7 @@
     <style name="ProfileImageCard">
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="cardElevation">0dp</item>
-        <item name="cardCornerRadius">16dp</item>
+        <item name="cardCornerRadius">60dp</item>
     </style>
 
     <style name="ProfileNameInitialStyle">
@@ -51,5 +51,11 @@
         <item name="android:stateListAnimator" tools:ignore="NewApi">@null</item>
         <item name="android:padding">@dimen/dimen_20</item>
         <item name="rippleColor">@color/gray</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">13sp</item>
     </style>
 </resources>

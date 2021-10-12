@@ -7,6 +7,7 @@ import com.dev.gka.ktupascohub.models.Student
 import com.dev.gka.ktupascohub.utilities.Constants.IS_FIRST_TIME
 import com.dev.gka.ktupascohub.utilities.Constants.IS_REP
 import com.dev.gka.ktupascohub.utilities.Constants.IS_STUDENT
+import com.dev.gka.ktupascohub.utilities.Constants.STUDENT_LEVEL
 
 class PrefManager private constructor() {
 
@@ -18,7 +19,16 @@ class PrefManager private constructor() {
         editor!!.apply()
     }
 
-    fun welcomeActivityOpened(b: Boolean) {
+    fun studentLevel(level: String) {
+        editor!!.putString(STUDENT_LEVEL, level)
+        editor!!.apply()
+    }
+
+    fun getStudentLevel(): String? {
+        return sharedPreferences!!.getString(STUDENT_LEVEL, null)
+    }
+
+    fun accountSelectionOpened(b: Boolean) {
         editor!!.putBoolean(IS_FIRST_TIME, b)
         editor!!.apply()
     }
@@ -49,7 +59,11 @@ class PrefManager private constructor() {
         return sharedPreferences!!.getString("phone", "No Record Found")
     }
 
-    fun hasRun(): Boolean {
+    fun getLevel(): String? {
+        return sharedPreferences!!.getString(STUDENT_LEVEL, "100")
+    }
+
+    fun hasAccountSelectionRun(): Boolean {
         return sharedPreferences!!.getBoolean(IS_FIRST_TIME, false)
     }
 

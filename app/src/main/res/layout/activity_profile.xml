@@ -36,13 +36,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView2"
+            style="@style/ProfileImageCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/dimen_32"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_profile"
-            style="@style/ProfileImageCard">
+            app:layout_constraintTop_toBottomOf="@id/app_bar_profile">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="120dp"
@@ -62,6 +62,7 @@
 
                 <TextView
                     android:id="@+id/text_name_initials"
+                    style="@style/ProfileNameInitialStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_8"
@@ -74,18 +75,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="AG"
-                    style="@style/ProfileNameInitialStyle" />
+                    tools:text="AG" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/text_display_name"
             style="@style/CardTextCaption"
-            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_16"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/materialCardView2"
             app:layout_constraintStart_toStartOf="@+id/materialCardView2"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
             tools:text="I am Gamah" />
@@ -93,25 +94,36 @@
         <TextView
             android:id="@+id/text_email"
             style="@style/BodyText"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/text_display_name"
             app:layout_constraintTop_toBottomOf="@+id/text_display_name"
             tools:text="iamgamah@gmail.com" />
 
+        <TextView
+            android:id="@+id/text_level"
+            style="@style/BodyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/text_email"
+            app:layout_constraintTop_toBottomOf="@+id/text_email"
+            tools:text="iamgamah@gmail.com" />
 
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
-            android:layout_height="1.5dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/dimen_8"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/text_email"
-            app:layout_constraintTop_toBottomOf="@id/text_email" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_level" />
 
 
         <com.google.android.material.button.MaterialButton

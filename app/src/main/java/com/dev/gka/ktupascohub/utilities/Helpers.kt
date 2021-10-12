@@ -4,21 +4,39 @@ package com.dev.gka.ktupascohub.utilities
 import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.text.Editable
+import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dev.gka.ktupascohub.activities.FileDetailsActivity
 import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
 import com.dev.gka.ktupascohub.models.Course
+import com.dev.gka.ktupascohub.models.Rep
+import com.dev.gka.ktupascohub.models.Student
 import com.dev.gka.ktupascohub.utilities.Constants.COURSES
+import com.dev.gka.ktupascohub.utilities.Constants.LECTURER
+import com.dev.gka.ktupascohub.utilities.Constants.LEVEL
+import com.dev.gka.ktupascohub.utilities.Constants.QUESTIONS
+import com.dev.gka.ktupascohub.utilities.Constants.QUESTION_URL
+import com.dev.gka.ktupascohub.utilities.Constants.SEMESTER
+import com.dev.gka.ktupascohub.utilities.Constants.SOLUTION_URL
+import com.dev.gka.ktupascohub.utilities.Constants.STUDENTS
+import com.dev.gka.ktupascohub.utilities.Constants.TITLE
+import com.dev.gka.ktupascohub.utilities.Constants.YEAR
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -57,20 +75,38 @@ object Helpers {
             "Florence Agyeiwaa",
             "CSD 233 Social, Legal & Ethical Issues in Computing",
             "300",
-            null,
+            "2020",
             "First",
-            null
+            null,
+            null,
         ),
-        Course("Sefakor Awurama Adabunu", "CSD 307 Operations Research 1", "300", null, "First", null),
-        Course("Martin Offei", "CSD 313 Server Concepts", "300", null, "First", null),
-        Course("Bright Anibreka", "CSD 317 System Administration", null, "300", "First", null),
+        Course(
+            "Sefakor Awurama Adabunu",
+            "CSD 307 Operations Research 1",
+            "300",
+            "2019",
+            "First",
+            null,
+            null,
+        ),
+        Course("Martin Offei", "CSD 313 Server Concepts", "300", "2018", "First", null, null),
+        Course(
+            "Bright Anibreka",
+            "CSD 317 System Administration",
+            "300",
+            "2017",
+            "First",
+            null,
+            null,
+        ),
         Course(
             "Benjamin Kwoffie",
             "CSD 319 IT & the Contemporary Manager (Entrepreneurship)",
             "300",
-            null,
+            "2019",
             "First",
-            null
+            null,
+            null,
         )
     )
 
@@ -79,25 +115,29 @@ object Helpers {
         recyclerView: RecyclerView,
         imageView: ImageView,
         progressIndicator: LinearProgressIndicator,
-        firestore: FirebaseFirestore
+        firestore: FirebaseFirestore,
+        level: String
     ): MutableList<Course> {
         val courses = mutableListOf<Course>()
         progressIndicator.visibility = View.VISIBLE
-        firestore.collection(COURSES)
+        firestore.collection(QUESTIONS)
+            .document(COURSES)
+            .collection(level)
             .get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     progressIndicator.visibility = View.GONE
                     for (documentSnapshot in it.result) {
                         val course = Course(
-                            documentSnapshot.getString("lecturer"),
-                            documentSnapshot.getString("title"),
-                            documentSnapshot.getString("level"),
-                            documentSnapshot.getString("year"),
-                            documentSnapshot.getString("semester"),
-                            null
+                            documentSnapshot.getString(LECTURER),
+                            documentSnapshot.getString(TITLE),
+                            documentSnapshot.getString(LEVEL),
+                            documentSnapshot.getString(YEAR),
+                            documentSnapshot.getString(SEMESTER),
+                            documentSnapshot.getString(QUESTION_URL),
+                            documentSnapshot.getString(SOLUTION_URL),
                         )
-                        course.file = documentSnapshot.getString("file")
+                        Timber.d("Solution URL: ${course.solution}")
                         courses.add(course)
                     }
                     if (courses.isEmpty()) {
@@ -109,32 +149,7 @@ object Helpers {
                         recyclerView.apply {
                             adapter =
                                 CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
-                                    requestStoragePermission(context, object : PermissionsCallback {
-                                        @RequiresApi(Build.VERSION_CODES.M)
-                                        override fun onPermissionRequest(granted: Boolean) {
-                                            if (granted) {
-                                                if (hasNetworkConnected(context)) {
-                                                    showSnack(
-                                                        recyclerView,
-                                                        "Downloading ${course.title}"
-                                                    )
-                                                    downloadFile(
-                                                        context,
-                                                        course.title!!,
-                                                        course.file!!
-                                                    )
-                                                } else showSnack(
-                                                    recyclerView,
-                                                    "An active internet connection is required to download file"
-                                                )
-                                            } else
-                                                showSnack(
-                                                    recyclerView,
-                                                    "Storage permission is required to download file."
-                                                )
-                                        }
-
-                                    })
+                                    courseBundle(context, course)
                                 }, courses)
                             layoutManager = LinearLayoutManager(
                                 context,
@@ -163,7 +178,7 @@ object Helpers {
     }
 
 
-    private fun requestStoragePermission(context: Context, callback: PermissionsCallback) {
+    fun requestStoragePermission(context: Context, callback: PermissionsCallback) {
         Dexter.withContext(context)
             .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .withListener(object : PermissionListener {
@@ -192,6 +207,75 @@ object Helpers {
         val network = manager?.activeNetwork
         manager?.getNetworkCapabilities(network).also {
             return it != null && it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        }
+    }
+
+    fun nameToFirebase(firestore: FirebaseFirestore, name: String, uid: String) {
+        val rep = Rep(name, uid)
+        firestore.collection(Constants.USERS)
+            .document(STUDENTS)
+            .collection(uid)
+            .add(rep)
+    }
+
+    fun nameFromFirebase(
+        auth: FirebaseAuth, firestore: FirebaseFirestore, context: Context
+    ): Boolean {
+        var isComplete = false
+        val user = auth.currentUser
+        if (user != null) {
+            firestore.collection(Constants.USERS)
+                .document(STUDENTS)
+                .collection(user.uid)
+                .get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val document = task.result.documents[0]
+                        val name = document.getString("name")
+                        val student = Student(name, user.email, null, null)
+                        Timber.d("$student")
+
+                        PrefManager.getInstance(context).saveUserInfo(student)
+                        isComplete = true
+                    }
+                }.addOnFailureListener {
+                    Timber.d("Rep : $it")
+                    isComplete = false
+                }
+        }
+        return isComplete
+    }
+
+    private fun courseBundle(context: Context, course: Course) {
+        val bundle = bundleOf(
+            TITLE to course.title,
+            LECTURER to course.lecturer,
+            LEVEL to course.level,
+            YEAR to course.year,
+            SEMESTER to course.semester,
+            QUESTION_URL to course.question,
+            SOLUTION_URL to course.solution
+        )
+        val intent = Intent(context, FileDetailsActivity::class.java).apply {
+            putExtras(bundle)
+        }
+        context.startActivity(intent)
+    }
+
+    fun isEmailValid(email: Editable?, editText: TextInputEditText): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(editText.text.toString()).matches()
+                && email != null
+    }
+
+    fun isPasswordValid(password: Editable?): Boolean {
+        return password != null && password.length >= 8
+    }
+
+    fun collectionPath(level: Int?): String {
+        return when (level) {
+            100 -> Constants.FIRST_YEAR
+            200 -> Constants.SECOND_YEAR
+            300 -> Constants.THIRD_YEAR
+            else -> "Not found"
         }
     }
 
