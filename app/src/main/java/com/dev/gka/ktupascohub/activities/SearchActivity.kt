@@ -33,7 +33,7 @@ class SearchActivity : BaseActivity() {
         courses = firestoreData(
             this.applicationContext,
             binding.rvSearch,
-            binding.imageNoTaskSearch,
+            binding.groupSearch,
             binding.indicatorSearch,
             firestore, level
         )
@@ -71,6 +71,7 @@ class SearchActivity : BaseActivity() {
             if (course.lecturer?.lowercase()?.contains(s) == true
                 || course.title?.lowercase()?.contains(s) == true
                 || course.level?.lowercase()?.contains(s) == true
+                || course.year?.lowercase()?.contains(s) == true
                 || course.semester?.lowercase()?.contains(s) == true
             ) {
                 results.add(course)

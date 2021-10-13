@@ -113,7 +113,7 @@ object Helpers {
     fun firestoreData(
         context: Context,
         recyclerView: RecyclerView,
-        imageView: ImageView,
+        group: View,
         progressIndicator: LinearProgressIndicator,
         firestore: FirebaseFirestore,
         level: String
@@ -141,10 +141,10 @@ object Helpers {
                         courses.add(course)
                     }
                     if (courses.isEmpty()) {
-                        imageView.visibility = View.VISIBLE
+                        group.visibility = View.VISIBLE
                         recyclerView.visibility = View.GONE
                     } else {
-                        imageView.visibility = View.GONE
+                        group.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE
                         recyclerView.apply {
                             adapter =
@@ -223,14 +223,16 @@ object Helpers {
     ): Boolean {
         var isComplete = false
         val user = auth.currentUser
+        var name: String? = ""
         if (user != null) {
             firestore.collection(Constants.USERS)
                 .document(STUDENTS)
                 .collection(user.uid)
                 .get().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val document = task.result.documents[0]
-                        val name = document.getString("name")
+                        for (document in task.result) {
+                            name = document.getString("name")
+                        }
                         val student = Student(name, user.email, null, null)
                         Timber.d("$student")
 
@@ -277,6 +279,49 @@ object Helpers {
             300 -> Constants.THIRD_YEAR
             else -> "Not found"
         }
+    }
+
+    fun similarPapers(
+        context: Context,
+        recyclerView: RecyclerView,
+        progressIndicator: LinearProgressIndicator,
+        firestore: FirebaseFirestore,
+        level: String,
+        queryString: String
+    ) {
+        progressIndicator.visibility = View.VISIBLE
+        val courses = mutableListOf<Course>()
+        firestore.collection(QUESTIONS)
+            .document(COURSES)
+            .collection(level)
+            .whereEqualTo(LECTURER, queryString)
+            .get()
+            .addOnSuccessListener {
+                progressIndicator.visibility = View.GONE
+                for (document in it) {
+                    val course = Course(
+                        document.getString(LECTURER),
+                        document.getString(TITLE),
+                        document.getString(LEVEL),
+                        document.getString(YEAR),
+                        document.getString(SEMESTER),
+                        document.getString(QUESTION_URL),
+                        document.getString(SOLUTION_URL),
+                    )
+                    courses.add(course)
+                    recyclerView.apply {
+                        adapter =
+                            CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
+                                courseBundle(context, course)
+                            }, courses)
+                        layoutManager = LinearLayoutManager(
+                            context,
+                            LinearLayoutManager.VERTICAL,
+                            false
+                        )
+                    }
+                }
+            }
     }
 
 }

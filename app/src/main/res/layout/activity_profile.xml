@@ -84,9 +84,8 @@
             style="@style/CardTextCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_16"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/materialCardView2"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/materialCardView2"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
             tools:text="I am Gamah" />
@@ -97,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="18sp"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/text_display_name"
             app:layout_constraintTop_toBottomOf="@+id/text_display_name"
             tools:text="iamgamah@gmail.com" />
@@ -108,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="18sp"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/text_email"
             app:layout_constraintTop_toBottomOf="@+id/text_email"
             tools:text="iamgamah@gmail.com" />

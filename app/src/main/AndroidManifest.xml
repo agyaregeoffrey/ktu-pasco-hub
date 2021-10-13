@@ -20,9 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KtuPascoHub">
         <activity
+            android:name=".activities.SimilarPapersActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.FileDetailsActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.LevelSelectionActivity"
             android:exported="true" />

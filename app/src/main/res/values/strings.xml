@@ -69,4 +69,6 @@
     <string name="selected_question_paper">Selected Question Paper</string>
     <string name="selected_solution">Selected Solution</string>
     <string name="show_similar_papers">Similar Papers</string>
+    <string name="confirm">Confirm</string>
+    <string name="no_files_uploaded_yet">No files uploaded yet</string>
 </resources>

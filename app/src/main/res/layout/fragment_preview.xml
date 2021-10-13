@@ -188,10 +188,11 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_upload"
                             style="@style/ButtonStyle"
+                            android:backgroundTint="@color/green"
                             android:layout_width="@dimen/dimen_150"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_8"
-                            android:text="@string/upload_file"
+                            android:text="@string/confirm"
                             app:layout_constraintStart_toStartOf="@+id/text_input_solution"
                             app:layout_constraintTop_toBottomOf="@+id/text_input_solution" />
 

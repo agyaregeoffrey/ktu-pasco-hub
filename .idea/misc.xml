@@ -10,7 +10,9 @@
         <entry key="app/src/main/res/drawable/ic_google_icon.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_login_rafiki.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_pdf.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/ic_work_time_amico.xml" value="0.37552083333333336" />
         <entry key="app/src/main/res/drawable/search_bar_layout.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/layout-v23/item_past_question.xml" value="0.34646739130434784" />
         <entry key="app/src/main/res/layout/activity_account_selection.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_file_details.xml" value="0.14402173913043478" />
         <entry key="app/src/main/res/layout/activity_level_selection.xml" value="0.365625" />
@@ -21,17 +23,18 @@
         <entry key="app/src/main/res/layout/activity_rep_upload.xml" value="0.16394927536231885" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.365625" />
-        <entry key="app/src/main/res/layout/activity_student.xml" value="0.15217391304347827" />
+        <entry key="app/src/main/res/layout/activity_similar_papers.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_student.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_upload.xml" value="0.3489065606361829" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.1480978260869565" />
         <entry key="app/src/main/res/layout/app_bar_alyout.xml" value="0.16394927536231885" />
         <entry key="app/src/main/res/layout/app_bar_layout.xml" value="0.16394927536231885" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/content_rep_upload.xml" value="0.12962962962962962" />
+        <entry key="app/src/main/res/layout/content_rep_upload.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_search.xml" value="0.15217391304347827" />
         <entry key="app/src/main/res/layout/drop_down_list_item.xml" value="0.15625" />
-        <entry key="app/src/main/res/layout/fragment_preview.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/item_past_question.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_preview.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_past_question.xml" value="0.33" />
         <entry key="app/src/main/res/menu/context_menu.xml" value="0.1828125" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1828125" />
         <entry key="app/src/main/res/menu/settings_menu.xml" value="0.1828125" />

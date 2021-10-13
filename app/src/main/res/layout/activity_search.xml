@@ -67,14 +67,31 @@
 
     <ImageView
         android:id="@+id/image_no_task_search"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:visibility="gone"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/no_task" />
+
+    <TextView
+        android:id="@+id/text_search_no_task"
+        style="@style/CardTextCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_4"
+        android:text="@string/no_files_uploaded_yet"
+        app:layout_constraintEnd_toEndOf="@+id/image_no_task_search"
+        app:layout_constraintStart_toStartOf="@+id/image_no_task_search"
+        app:layout_constraintTop_toBottomOf="@id/image_no_task_search" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="image_no_task_search, text_search_no_task" />
 
     <TextView
         android:id="@+id/text_search_status"

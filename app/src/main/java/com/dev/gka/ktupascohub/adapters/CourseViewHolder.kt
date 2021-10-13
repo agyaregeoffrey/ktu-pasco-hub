@@ -39,6 +39,6 @@ class CourseViewHolder private constructor(private val binding: ItemPastQuestion
         v: View?,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
-        menu?.add(Menu.NONE, R.id.menu_similar, Menu.NONE, R.string.show_similar_papers)
+        menu?.add(this.adapterPosition, R.id.menu_similar, Menu.NONE, R.string.show_similar_papers)
     }
 }

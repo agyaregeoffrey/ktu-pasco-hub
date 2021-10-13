@@ -8,6 +8,8 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.databinding.ActivityStudentBinding
+import com.dev.gka.ktupascohub.models.Course
+import com.dev.gka.ktupascohub.utilities.Constants
 import com.dev.gka.ktupascohub.utilities.Constants.TOPIC
 import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
@@ -15,9 +17,12 @@ import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 
-class StudentActivity : BaseActivity() {
+class StudentActivity : BaseActivity(), View.OnCreateContextMenuListener {
     private lateinit var binding: ActivityStudentBinding
     private lateinit var firestore: FirebaseFirestore
+
+    private lateinit var courses: MutableList<Course>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_student)
@@ -30,12 +35,12 @@ class StudentActivity : BaseActivity() {
 
     private fun initFirebaseData() {
         val level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
-        firestoreData(
+        courses = firestoreData(
             this.applicationContext,
             binding.rvStudent,
-            binding.imageNoTaskStudent,
+            binding.groupStud,
             binding.indicatorStudent,
-            firestore, level!!
+            firestore, level
         )
     }
 
@@ -61,6 +66,18 @@ class StudentActivity : BaseActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_similar -> {
+                val intent = Intent(this, SimilarPapersActivity::class.java)
+                intent.putExtra(Constants.LECTURER, courses[item.groupId].lecturer)
+                startActivity(intent)
+                true
+            }
+            else -> super.onContextItemSelected(item)
         }
     }
 }

@@ -14,8 +14,8 @@
 
             <ImageView
                 android:id="@+id/image_account"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="@dimen/dimen_16"
                 android:contentDescription="@string/account_selection"
                 android:src="@drawable/ktu_logo"

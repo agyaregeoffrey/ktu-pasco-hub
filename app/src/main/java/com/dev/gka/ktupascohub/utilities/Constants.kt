@@ -11,8 +11,8 @@ object Constants {
     const val STUDENT_LEVEL = "level"
 
     // Firebase Paths
-    const val STORAGE_PATH = "pastquestions"
-    const val QUESTIONS = "pasquestions"
+    const val STORAGE_QUESTIONS = "pastquestions"
+    const val QUESTIONS = "pastquestions"
     const val COURSES = "courses"
     const val USERS = "users"
     const val STUDENTS = "students"

@@ -20,9 +20,10 @@ import com.dev.gka.ktupascohub.utilities.Constants.COURSES
 import com.dev.gka.ktupascohub.utilities.Constants.FIRST_YEAR
 import com.dev.gka.ktupascohub.utilities.Constants.QUESTIONS
 import com.dev.gka.ktupascohub.utilities.Constants.SECOND_YEAR
-import com.dev.gka.ktupascohub.utilities.Constants.STORAGE_PATH
+import com.dev.gka.ktupascohub.utilities.Constants.STORAGE_QUESTIONS
 import com.dev.gka.ktupascohub.utilities.Constants.THIRD_YEAR
 import com.dev.gka.ktupascohub.utilities.Constants.TOPIC
+import com.dev.gka.ktupascohub.utilities.FirebaseCallback
 import com.dev.gka.ktupascohub.utilities.Helpers.courses
 import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
 import com.dev.gka.ktupascohub.utilities.RequestConfirmationListener
@@ -170,7 +171,12 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         val intent = Intent()
         intent.type = "application/pdf"
         intent.action = Intent.ACTION_GET_CONTENT
-        startForResultQuestion.launch(Intent.createChooser(intent, getString(R.string.select_question)))
+        startForResultQuestion.launch(
+            Intent.createChooser(
+                intent,
+                getString(R.string.select_question)
+            )
+        )
     }
 
 
@@ -178,7 +184,12 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         val intent = Intent()
         intent.type = "application/pdf"
         intent.action = Intent.ACTION_GET_CONTENT
-        startForResultSolution.launch(Intent.createChooser(intent, getString(R.string.select_solution)))
+        startForResultSolution.launch(
+            Intent.createChooser(
+                intent,
+                getString(R.string.select_solution)
+            )
+        )
     }
 
     private fun questionUrlToString(returnIntent: Intent, button: MaterialButton) {
@@ -204,6 +215,7 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
             fileNameWithoutExtension = File(solutionFileName).nameWithoutExtension
         }
     }
+
     private fun isFormValidated(view: View): Boolean {
         var isValid = true
 
@@ -234,30 +246,41 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
     ) {
         binding.buttonUpload.isEnabled = false
         binding.indicatorUpload.visibility = View.VISIBLE
+        var questionUrl: String? = null
+        var solutionUrl: String? = null
+        getSolutionFileUri(object : FirebaseCallback {
+            override fun onTaskComplete(url: String?) {
+                solutionUrl = url
+                Timber.d("Url: $solutionUrl")
+            }
+        })
         val storageReference: StorageReference =
             firebaseStorage
                 .reference
                 .child(
-                    "$STORAGE_PATH/$questionFileName"
+                    "$STORAGE_QUESTIONS/$questionFileName"
                 )
         questionFileUri?.let {
             storageReference.putFile(it)
-                .addOnSuccessListener { taskSnapShot ->
-                    // Add file url to past question details to enable user download
-                    val uri: Task<Uri> = taskSnapShot.storage.downloadUrl
-                    while (!uri.isComplete);
-                    var sUri: Uri? = null
-                    if (solutionFileUri != null)
-                        sUri = uploadSolution()
-                    val questionUri: Uri? = uri.result
+                .continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let { e ->
+                            throw e
+                        }
+                    }
+                    storageReference.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        questionUrl = task.result.toString()
+                    }
                     val course = Course(
                         lecturer,
                         title,
                         level,
                         year,
                         semester,
-                        questionUri.toString(),
-                        sUri.toString()
+                        questionUrl,
+                        solutionUrl
                     )
                     fireStoreDatabase
                         .collection(QUESTIONS)
@@ -276,27 +299,39 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         }
     }
 
-    private fun uploadSolution(): Uri? {
-        var solutionUri: Uri? = null
+    private fun getSolutionFileUri(firebaseCallback: FirebaseCallback) {
         val storageReference: StorageReference =
             firebaseStorage
                 .reference
                 .child(
-                    "$STORAGE_PATH/$solutionFileName"
+                    "$STORAGE_QUESTIONS/$solutionFileName"
                 )
-        solutionFileUri?.let { uri ->
-            storageReference.putFile(uri)
-                .addOnSuccessListener { taskSnapShot ->
-                    // Add file url to past question details to enable user download
-                    val task: Task<Uri> = taskSnapShot.storage.downloadUrl
-                    while (!task.isComplete);
-                    val url: Uri? = task.result
-                    solutionUri = url
-                }.addOnFailureListener {
-                    Timber.e("Solution upload failed: ${it.message}")
+        solutionFileUri?.let {
+            storageReference.putFile(it)
+                .continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let { e ->
+                            throw e
+                        }
+                    }
+                    storageReference.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        firebaseCallback.onTaskComplete(task.result.toString())
+                    } else {
+                        // do nothing
+                    }
                 }
         }
-        return solutionUri
+        }
+
+    override fun onConfirmed() {
+        val fbPath = collectionPath(level.toInt())
+        uploadFile(title, lecturer, level, semester, year, fbPath)
+        PushNotification(Course("New Past Question Uploaded", title, null,
+            null, null, null, null), TOPIC).also { push ->
+            sendNotification(push)
+        }
     }
 
     private fun sendNotification(notification: PushNotification) =
@@ -319,15 +354,6 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
             200 -> SECOND_YEAR
             300 -> THIRD_YEAR
             else -> "Not found"
-        }
-    }
-
-    override fun onConfirmed() {
-        val fbPath = collectionPath(level.toInt())
-        uploadFile(title, lecturer, level, semester, year, fbPath)
-        PushNotification(Course("New Past Question Uploaded", title, null,
-            null, null, null, null), TOPIC).also { push ->
-            sendNotification(push)
         }
     }
 }

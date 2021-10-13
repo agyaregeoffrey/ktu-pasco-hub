@@ -69,6 +69,11 @@ class SignUpActivity : AppCompatActivity() {
             binding.editTextAccountName.error = getString(R.string.field_cannot_be_empty)
         }
 
+        if (binding.editTextAccountEmail.text?.contains("rep", true) == true) {
+            isValid = false
+            binding.textInputAccountEmail.error = getString(R.string.enter_a_valid_email)
+        }
+
         if (!isEmailValid(binding.editTextAccountEmail.text, binding.editTextAccountEmail)) {
             isValid = false
             binding.textInputAccountEmail.error = getString(R.string.enter_a_valid_email)

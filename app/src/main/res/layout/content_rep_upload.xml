@@ -12,10 +12,10 @@
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/indicator_rep_load"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,11 +34,28 @@
             android:id="@+id/image_no_task_rep"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/no_task" />
+
+        <TextView
+            android:id="@+id/text_rep_no_task"
+            style="@style/CardTextCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:text="@string/no_files_uploaded_yet"
+            app:layout_constraintEnd_toEndOf="@+id/image_no_task_rep"
+            app:layout_constraintStart_toStartOf="@+id/image_no_task_rep"
+            app:layout_constraintTop_toBottomOf="@id/image_no_task_rep" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_rep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="image_no_task_rep, text_rep_no_task" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
