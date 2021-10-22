@@ -58,7 +58,7 @@
     <string name="det_semester">Semester</string>
     <string name="paper">Paper</string>
     <string name="no_solution_available">No solution available for this paper</string>
-    <string name="solution_disclaimer">This file you are about to download is not 100% guaranteed to be correct hence, do not rely solely on this material</string>
+    <string name="solution_disclaimer">The material you are about to download is not 100% guaranteed to be correct hence, do not rely solely on this material</string>
     <string name="download_solution_title">Download Solution - Caution</string>
     <string name="cancel">Cancel</string>
     <string name="review">Review</string>
@@ -68,7 +68,9 @@
     <string name="confirm_details">Confirm Details</string>
     <string name="selected_question_paper">Selected Question Paper</string>
     <string name="selected_solution">Selected Solution</string>
-    <string name="show_similar_papers">Similar Papers</string>
+    <string name="show_similar_papers">View all</string>
     <string name="confirm">Confirm</string>
     <string name="no_files_uploaded_yet">No files uploaded yet</string>
+    <string name="save">Save</string>
+    <string name="new_level">Change Level</string>
 </resources>

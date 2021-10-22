@@ -1,4 +1,4 @@
-package com.dev.gka.ktupascohub
+package com.dev.gka.ktupascohub.activities.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -6,14 +6,12 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.dev.gka.ktupascohub.databinding.FragmentPreviewBinding
-import com.dev.gka.ktupascohub.utilities.Constants
 import com.dev.gka.ktupascohub.utilities.Constants.LECTURER
 import com.dev.gka.ktupascohub.utilities.Constants.LEVEL
 import com.dev.gka.ktupascohub.utilities.Constants.QUESTION_URL
@@ -21,14 +19,13 @@ import com.dev.gka.ktupascohub.utilities.Constants.SEMESTER
 import com.dev.gka.ktupascohub.utilities.Constants.SOLUTION_URL
 import com.dev.gka.ktupascohub.utilities.Constants.TITLE
 import com.dev.gka.ktupascohub.utilities.Constants.YEAR
-import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
-import com.dev.gka.ktupascohub.utilities.RequestConfirmationListener
+import com.dev.gka.ktupascohub.utilities.UploadConfirmationListener
 
 
 class Preview : DialogFragment() {
 
     private lateinit var binding: FragmentPreviewBinding
-    private lateinit var listener: RequestConfirmationListener
+    private lateinit var listener: UploadConfirmationListener
 
     private var title: String? = null
     private var lecturer: String? = null
@@ -75,7 +72,7 @@ class Preview : DialogFragment() {
             }
             builder.setView(binding.root)
             builder.create()
-        }?: throw IllegalStateException("Parent cannot be null")
+        } ?: throw IllegalStateException("Parent cannot be null")
     }
 
     override fun onCreateView(
@@ -91,7 +88,7 @@ class Preview : DialogFragment() {
         super.onAttach(context)
 
         try {
-            listener = activity as RequestConfirmationListener
+            listener = activity as UploadConfirmationListener
         } catch (e: ClassCastException) {
             throw ClassCastException(
                 (context.toString() +
@@ -108,7 +105,15 @@ class Preview : DialogFragment() {
          * @return A new instance of fragment Preview.
          */
         @JvmStatic
-        fun newInstance(title: String, lecturer: String, year: String, level: String, sem: String, question: String, solution: String) =
+        fun newInstance(
+            title: String,
+            lecturer: String,
+            year: String,
+            level: String,
+            sem: String,
+            question: String,
+            solution: String
+        ) =
             Preview().apply {
                 arguments = Bundle().apply {
                     val bundle = bundleOf(

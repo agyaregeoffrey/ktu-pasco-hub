@@ -51,7 +51,7 @@ class FileDetailsActivity : AppCompatActivity() {
                 year, semester, question, solution,
             )
 
-            if (course.solution == "null") {
+            if (course.solution == null) {
                 binding.buttonDownloadSolution.text = getString(R.string.no_solution_available)
                 binding.buttonDownloadSolution.isEnabled = false
             } else {

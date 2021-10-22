@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_downward_24.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1574074074074074" />
         <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_cancel_black_24dp.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_google_icon.xml" value="0.19895833333333332" />
@@ -33,8 +34,10 @@
         <entry key="app/src/main/res/layout/content_rep_upload.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_search.xml" value="0.15217391304347827" />
         <entry key="app/src/main/res/layout/drop_down_list_item.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/fragment_edit_level.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_preview.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_past_question.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/item_similar_question.xml" value="0.33" />
         <entry key="app/src/main/res/menu/context_menu.xml" value="0.1828125" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1828125" />
         <entry key="app/src/main/res/menu/settings_menu.xml" value="0.1828125" />

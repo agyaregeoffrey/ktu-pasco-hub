@@ -60,7 +60,6 @@ class RepSignInActivity : BaseActivity() {
             false
         }
 
-
         binding.editTextEmail.setOnKeyListener { _, _, _ ->
             if (isEmailValid(binding.editTextEmail.text, binding.editTextEmail)) {
                 binding.textInputClassRepEmail.error = null
@@ -135,10 +134,10 @@ class RepSignInActivity : BaseActivity() {
     private fun isFormValidated(): Boolean {
         var isValid = true
 
-        if (binding.editTextName.text?.isEmpty() == true) {
-            isValid = false
-            binding.textInputName.error = getString(R.string.field_cannot_be_empty)
-        }
+//        if (binding.editTextName.text?.isEmpty() == true) {
+//            isValid = false
+//            binding.textInputName.error = getString(R.string.field_cannot_be_empty)
+//        }
 
         if (!isEmailValid(binding.editTextEmail.text, binding.editTextEmail)) {
             isValid = false

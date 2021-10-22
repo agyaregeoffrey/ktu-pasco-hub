@@ -52,6 +52,7 @@ class SignUpActivity : AppCompatActivity() {
                         val prefs = PrefManager.getInstance(this)
                         prefs.saveUserInfo(student)
                         prefs.accountSelectionOpened(b = true)
+                        prefs.studentSignInStatus(b = true)
                         startActivity(Intent(this, LevelSelectionActivity::class.java))
                         finish()
                     }

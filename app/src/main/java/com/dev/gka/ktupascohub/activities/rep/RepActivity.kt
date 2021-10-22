@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.activities.BaseActivity
@@ -18,13 +19,11 @@ import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
 import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
+import timber.log.Timber
 
-class RepActivity : BaseActivity(), View.OnCreateContextMenuListener {
+class RepActivity : BaseActivity() {
     private lateinit var binding: ActivityRepBinding
     private lateinit var firestore: FirebaseFirestore
-
-    private var level: String? = null
-    private lateinit var courses: MutableList<Course>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +31,20 @@ class RepActivity : BaseActivity(), View.OnCreateContextMenuListener {
         setSupportActionBar(binding.includedLayout.toolbarRep)
 
         firestore = FirebaseFirestore.getInstance()
-        level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
+
 
         initFirebaseData()
-
-        registerForContextMenu(binding.includedLayout.content.rvRepQuestions)
 
         binding.includedLayout.fabUpload.setOnClickListener {
             val intent = Intent(this, UploadActivity::class.java)
             startActivity(intent)
         }
 
+    }
+
+    override fun onResume() {
+        initFirebaseData()
+        super.onResume()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,25 +72,15 @@ class RepActivity : BaseActivity(), View.OnCreateContextMenuListener {
         }
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_similar -> {
-                val intent = Intent(this, SimilarPapersActivity::class.java)
-                intent.putExtra(LECTURER, courses[item.groupId].lecturer)
-                startActivity(intent)
-                true
-            }
-            else -> super.onContextItemSelected(item)
-        }
-    }
-
     private fun initFirebaseData() {
-        courses = firestoreData(
-            this.applicationContext,
+        val level = collectionPath(PrefManager.getInstance(applicationContext).getStudentLevel()?.toInt())
+       firestoreData(
+            applicationContext,
             binding.includedLayout.content.rvRepQuestions,
             binding.includedLayout.content.groupRep,
             binding.includedLayout.content.indicatorRepLoad,
-            firestore, level!!
+            firestore, level
         )
     }
+
 }

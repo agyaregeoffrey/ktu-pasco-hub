@@ -15,12 +15,12 @@ class LevelSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityLevelSelectionBinding = DataBindingUtil.setContentView(this, R.layout.activity_level_selection)
-        val levels: MutableList<String> = mutableListOf("100", "200", "300")
+        val levels: MutableList<String> = mutableListOf("300", "200", "100")
 
         val levelsAdapter = ArrayAdapter(this, R.layout.drop_down_list_item, levels)
         binding.levelDropdown.setAdapter(levelsAdapter)
 
-        val pref = PrefManager.getInstance(this)
+        val pref = PrefManager.getInstance(applicationContext)
         val isRep = pref.hasRepSignedIn()
         val isStudent = pref.hasStudentSignedIn()
 

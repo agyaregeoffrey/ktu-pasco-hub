@@ -13,13 +13,13 @@ import android.os.Environment
 import android.text.Editable
 import android.util.Patterns
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.gka.ktupascohub.activities.FileDetailsActivity
 import com.dev.gka.ktupascohub.adapters.CourseRecyclerAdapter
+import com.dev.gka.ktupascohub.adapters.RelatedRecyclerAdapter
 import com.dev.gka.ktupascohub.models.Course
 import com.dev.gka.ktupascohub.models.Rep
 import com.dev.gka.ktupascohub.models.Student
@@ -53,23 +53,6 @@ object Helpers {
             .show()
     }
 
-    // Dummy data
-//    val papers = listOf(
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "First", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "First", "Semester 2", null),
-//        Course("Solomon Anab", "Data Structures & Algorithm", "2020", "First","Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Solomon Anab", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//        Course("Samuel Tawiah", "Data Structures & Algorithm", "2020", "Semester 2", null),
-//    )
-
     val courses = listOf(
         Course(
             "Florence Agyeiwaa",
@@ -89,7 +72,15 @@ object Helpers {
             null,
             null,
         ),
-        Course("Martin Offei", "CSD 313 Server Concepts", "300", "2018", "First", null, null),
+        Course(
+            "Martin Offei",
+            "CSD 313 Server Concepts",
+            "300",
+            "2018",
+            "First",
+            null,
+            null
+        ),
         Course(
             "Bright Anibreka",
             "CSD 317 System Administration",
@@ -107,6 +98,96 @@ object Helpers {
             "First",
             null,
             null,
+        ),
+        Course(
+            "Collins Collinson",
+            "CSD 121 Introduction to Structured Programming",
+            "100",
+            "2018",
+            "First",
+            null,
+            null
+        ),
+        Course(
+            "Collins Collinson",
+            "CSD 106 Programming with Visual Basic",
+            "100",
+            "2019",
+            "Second",
+            null,
+            null
+        ),
+        Course(
+            "Mensah Sitti",
+            "CSD 123 Computer Organisation & Architecture",
+            "200",
+            "2020",
+            "First",
+            null,
+            null
+        ),
+        Course(
+            "Samuel Tawiah",
+            "CSD 201 Database Concepts & Technology",
+            "200",
+            "2020",
+            "First",
+            null,
+            null
+        ),
+        Course(
+            "Mensah Sitti",
+            "CSD 224 Routing and Switching Technology",
+            "200",
+            "2019",
+            "Second",
+            null,
+            null
+        ),
+        Course(
+            "Samuel Tawiah",
+            "CSD 211 Data Structures & Algorithms 1",
+            "200",
+            "2020",
+            "First",
+            null,
+            null
+        ),
+        Course(
+            "Nina Pearl",
+            "CSD 231 Programming with Java 1",
+            "200",
+            "2018",
+            "First",
+            null,
+            null
+        ),
+        Course(
+            "Martin Offei",
+            "CSD 224 Operating System & Open Source",
+            "200",
+            "2017",
+            "Second",
+            null,
+            null
+        ),
+        Course(
+            "Sefakor Awurama Adabunu",
+            "CSD 306 Information & Management",
+            "300",
+            "2019",
+            "Second",
+            null,
+            null
+        ),
+        Course(
+            "Patricia Ghann",
+            "CSD 207 System Analysis & Design 1",
+            "200",
+            "2020",
+            "First",
+            null,
+            null
         )
     )
 
@@ -137,7 +218,6 @@ object Helpers {
                             documentSnapshot.getString(QUESTION_URL),
                             documentSnapshot.getString(SOLUTION_URL),
                         )
-                        Timber.d("Solution URL: ${course.solution}")
                         courses.add(course)
                     }
                     if (courses.isEmpty()) {
@@ -247,7 +327,7 @@ object Helpers {
         return isComplete
     }
 
-    private fun courseBundle(context: Context, course: Course) {
+    fun courseBundle(context: Context, course: Course) {
         val bundle = bundleOf(
             TITLE to course.title,
             LECTURER to course.lecturer,
@@ -259,6 +339,7 @@ object Helpers {
         )
         val intent = Intent(context, FileDetailsActivity::class.java).apply {
             putExtras(bundle)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(intent)
     }
@@ -311,7 +392,7 @@ object Helpers {
                     courses.add(course)
                     recyclerView.apply {
                         adapter =
-                            CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
+                            RelatedRecyclerAdapter(RelatedRecyclerAdapter.RelatedClickListener {
                                 courseBundle(context, course)
                             }, courses)
                         layoutManager = LinearLayoutManager(

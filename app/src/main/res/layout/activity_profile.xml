@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_4"
-            android:textSize="15sp"
+            android:textSize="17sp"
             app:layout_constraintStart_toStartOf="@+id/materialCardView2"
             app:layout_constraintTop_toBottomOf="@+id/materialCardView2"
             tools:text="I am Gamah" />
@@ -158,6 +158,20 @@
             app:layout_constraintEnd_toEndOf="@+id/imageView4"
             app:layout_constraintStart_toStartOf="@+id/imageView4"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+        <ImageView
+            android:id="@+id/image_edit_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/text_level"
+            app:layout_constraintTop_toBottomOf="@+id/text_email"
+            app:layout_constraintStart_toEndOf="@id/text_level"
+            app:srcCompat="@drawable/ic_baseline_edit_24"
+            tools:layout_editor_absoluteX="128dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

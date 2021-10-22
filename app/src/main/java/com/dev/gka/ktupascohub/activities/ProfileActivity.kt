@@ -1,22 +1,22 @@
 package com.dev.gka.ktupascohub.activities
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dev.gka.ktupascohub.R
+import com.dev.gka.ktupascohub.activities.fragments.EditLevel
 import com.dev.gka.ktupascohub.databinding.ActivityProfileBinding
 import com.dev.gka.ktupascohub.utilities.Constants.LOG_OUT
 import com.dev.gka.ktupascohub.utilities.PrefManager
+import com.dev.gka.ktupascohub.utilities.RequestChangeLevelListener
+import com.dev.gka.ktupascohub.utilities.UploadConfirmationListener
 import com.google.firebase.auth.FirebaseAuth
 
-class ProfileActivity : BaseActivity() {
+class ProfileActivity : BaseActivity(), RequestChangeLevelListener {
     private lateinit var binding: ActivityProfileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +61,10 @@ class ProfileActivity : BaseActivity() {
             text = initials.toString()
         }
 
+        binding.imageEditLevel.setOnClickListener {
+            EditLevel.newInstance().show(supportFragmentManager, "")
+        }
+
     }
 
     private fun signOut() {
@@ -83,5 +87,10 @@ class ProfileActivity : BaseActivity() {
 
         val intent = Intent(LOG_OUT)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    override fun onChangeRequest(newLevel: String) {
+        PrefManager.getInstance(applicationContext).studentLevel(newLevel)
+        binding.textLevel.text = getString(R.string.level, newLevel)
     }
 }

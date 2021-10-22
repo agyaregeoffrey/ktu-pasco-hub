@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.databinding.ActivitySimilarPapersBinding
@@ -14,7 +15,7 @@ import com.dev.gka.ktupascohub.utilities.Helpers.similarPapers
 import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
 
-class SimilarPapersActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
+class SimilarPapersActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySimilarPapersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,16 +46,6 @@ class SimilarPapersActivity : AppCompatActivity(), View.OnCreateContextMenuListe
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_similar -> {
-                showSnack(binding.rvSimilar, "Already showing similar papers.")
-                true
-            }
-            else -> super.onContextItemSelected(item)
         }
     }
 }

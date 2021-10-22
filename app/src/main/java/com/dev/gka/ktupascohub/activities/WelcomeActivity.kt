@@ -9,6 +9,7 @@ import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.activities.rep.RepSignInActivity
 import com.dev.gka.ktupascohub.databinding.ActivityWelcomeBinding
 import com.dev.gka.ktupascohub.utilities.PrefManager
+import timber.log.Timber
 
 class WelcomeActivity : BaseActivity() {
     private lateinit var handler: Handler
@@ -16,12 +17,16 @@ class WelcomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityWelcomeBinding>(this, R.layout.activity_welcome)
 
+        val pref = PrefManager.getInstance(this)
+        val isOpened = pref.hasAccountSelectionRun()
+        val rep = pref.hasRepSignedIn()
+        val stud = pref.hasStudentSignedIn()
+
+        Timber.d("Account opened: $isOpened")
+        Timber.d("Rep: $rep or Student: $stud")
+
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            val pref = PrefManager.getInstance(this)
-            val isOpened = pref.hasAccountSelectionRun()
-            val rep = pref.hasRepSignedIn()
-            val stud = pref.hasStudentSignedIn()
             if (isOpened) {
                 if (rep) {
                     val intent = Intent(this, RepSignInActivity::class.java)

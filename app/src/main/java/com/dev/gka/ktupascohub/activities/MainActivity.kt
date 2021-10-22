@@ -126,7 +126,7 @@ class MainActivity : BaseActivity() {
                     prefs.studentSignInStatus(true)
                     val broadcast = Intent(FINISH)
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcast)
-                    startActivity(Intent(this, StudentActivity::class.java))
+                    startActivity(Intent(this, LevelSelectionActivity::class.java))
                     finish()
                 }
             }.addOnFailureListener {

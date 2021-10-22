@@ -1,5 +1,5 @@
 package com.dev.gka.ktupascohub.utilities
 
-interface RequestConfirmationListener {
+interface UploadConfirmationListener {
     fun onConfirmed()
 }

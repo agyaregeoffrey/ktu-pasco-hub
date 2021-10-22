@@ -10,25 +10,23 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import com.dev.gka.ktupascohub.Preview
+import androidx.lifecycle.ViewModelProvider
+import com.dev.gka.ktupascohub.activities.fragments.Preview
 import com.dev.gka.ktupascohub.R
 import com.dev.gka.ktupascohub.activities.BaseActivity
 import com.dev.gka.ktupascohub.databinding.ActivityUploadBinding
 import com.dev.gka.ktupascohub.models.Course
 import com.dev.gka.ktupascohub.models.PushNotification
 import com.dev.gka.ktupascohub.utilities.Constants.COURSES
-import com.dev.gka.ktupascohub.utilities.Constants.FIRST_YEAR
 import com.dev.gka.ktupascohub.utilities.Constants.QUESTIONS
-import com.dev.gka.ktupascohub.utilities.Constants.SECOND_YEAR
 import com.dev.gka.ktupascohub.utilities.Constants.STORAGE_QUESTIONS
-import com.dev.gka.ktupascohub.utilities.Constants.THIRD_YEAR
 import com.dev.gka.ktupascohub.utilities.Constants.TOPIC
 import com.dev.gka.ktupascohub.utilities.FirebaseCallback
+import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
 import com.dev.gka.ktupascohub.utilities.Helpers.courses
 import com.dev.gka.ktupascohub.utilities.Helpers.showSnack
-import com.dev.gka.ktupascohub.utilities.RequestConfirmationListener
+import com.dev.gka.ktupascohub.utilities.UploadConfirmationListener
 import com.dev.gka.ktupascohub.utilities.RetrofitInstance
-import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -36,15 +34,15 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 
-class UploadActivity : BaseActivity(), RequestConfirmationListener {
+class UploadActivity : BaseActivity(), UploadConfirmationListener {
     private lateinit var binding: ActivityUploadBinding
+    private lateinit var viewModel: UploadActivityViewModel
     private lateinit var fireStoreDatabase: FirebaseFirestore
     private lateinit var firebaseStorage: FirebaseStorage
 
@@ -59,7 +57,7 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
     private lateinit var questionFileName: String
 
     private var solutionFileUri: Uri? = null
-    private lateinit var solutionFileName: String
+    private var solutionFileName: String = "No file selected"
 
     private lateinit var fileNameWithoutExtension: String
 
@@ -70,8 +68,10 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 questionFileUri = result.data!!.data!!
+                viewModel.fileUri(questionFileUri!!)
                 questionUrlToString(result.data!!, binding.buttonAttachQuestion)
                 questionSelected = true
+                viewModel.questionSelected(questionSelected)
             }
         }
 
@@ -89,6 +89,9 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_upload)
         setSupportActionBar(binding.toolbarUpload)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            UploadActivityViewModel::class.java
+        )
         fireStoreDatabase = Firebase.firestore
         firebaseStorage = Firebase.storage
 
@@ -97,6 +100,14 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         binding.lecturerDropdown.setOnItemClickListener { _, _, position, _ ->
             for (i in 0..courses.size) {
                 binding.courseSelection.editText?.setText(courses[position].title)
+                binding.levelSelection.editText?.setText(courses[position].level)
+                binding.semesterSelection.editText?.setText(courses[position].semester)
+            }
+        }
+
+        binding.courseDropdown.setOnItemClickListener { _, _, position, _ ->
+            for (i in 0..courses.size) {
+                binding.lecturerSelection.editText?.setText(courses[position].lecturer)
                 binding.levelSelection.editText?.setText(courses[position].level)
                 binding.semesterSelection.editText?.setText(courses[position].semester)
             }
@@ -125,6 +136,18 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
 
         }
 
+        viewModel.name.observe(this, {
+            binding.buttonAttachQuestion.text = it
+            questionFileName = it
+        })
+
+        viewModel.uri.observe(this, {
+            questionFileUri = it
+        })
+
+        viewModel.questionSelected.observe(this, {
+            questionSelected = it
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -200,6 +223,7 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
             cursor.moveToFirst()
             button.text = cursor.getString(index)
             questionFileName = cursor.getString(index)
+            viewModel.fileName(questionFileName)
             fileNameWithoutExtension = File(questionFileName).nameWithoutExtension
         }
     }
@@ -248,12 +272,15 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
         binding.indicatorUpload.visibility = View.VISIBLE
         var questionUrl: String? = null
         var solutionUrl: String? = null
-        getSolutionFileUri(object : FirebaseCallback {
-            override fun onTaskComplete(url: String?) {
-                solutionUrl = url
-                Timber.d("Url: $solutionUrl")
-            }
-        })
+
+        if (solutionFileUri != null) {
+            getSolutionFileUri(object : FirebaseCallback {
+                override fun onTaskComplete(url: String?) {
+                    solutionUrl = url
+                    Timber.d("Url: $solutionUrl")
+                }
+            })
+        }
         val storageReference: StorageReference =
             firebaseStorage
                 .reference
@@ -323,13 +350,17 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
                     }
                 }
         }
-        }
+    }
 
     override fun onConfirmed() {
         val fbPath = collectionPath(level.toInt())
         uploadFile(title, lecturer, level, semester, year, fbPath)
-        PushNotification(Course("New Past Question Uploaded", title, null,
-            null, null, null, null), TOPIC).also { push ->
+        PushNotification(
+            Course(
+                "New Past Question Uploaded", title, null,
+                null, null, null, null
+            ), TOPIC
+        ).also { push ->
             sendNotification(push)
         }
     }
@@ -339,21 +370,13 @@ class UploadActivity : BaseActivity(), RequestConfirmationListener {
             try {
                 val response = RetrofitInstance.api.postNotification(notification)
                 if (response.isSuccessful) {
-                    Timber.d("Response: ${Gson().toJson(response)}")
+//                    Timber.d("Response: ${Gson().toJson(response)}")
                 } else {
-                    Timber.d(response.errorBody().toString())
+//                    Timber.d(response.errorBody().toString())
                 }
             } catch (e: Exception) {
                 Timber.e(e.toString())
             }
         }
 
-    private fun collectionPath(level: Int): String {
-        return when (level) {
-            100 -> FIRST_YEAR
-            200 -> SECOND_YEAR
-            300 -> THIRD_YEAR
-            else -> "Not found"
-        }
-    }
 }

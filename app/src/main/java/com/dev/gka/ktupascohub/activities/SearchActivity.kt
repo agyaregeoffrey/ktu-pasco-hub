@@ -13,6 +13,7 @@ import com.dev.gka.ktupascohub.databinding.ActivitySearchBinding
 import com.dev.gka.ktupascohub.models.Course
 import com.dev.gka.ktupascohub.utilities.Helpers
 import com.dev.gka.ktupascohub.utilities.Helpers.collectionPath
+import com.dev.gka.ktupascohub.utilities.Helpers.courseBundle
 import com.dev.gka.ktupascohub.utilities.Helpers.firestoreData
 import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,6 +22,7 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var courses: MutableList<Course>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
@@ -28,10 +30,10 @@ class SearchActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         firestore = FirebaseFirestore.getInstance()
-        val level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
+        val level = collectionPath(PrefManager.getInstance(applicationContext).getStudentLevel()?.toInt())
 
         courses = firestoreData(
-            this.applicationContext,
+            applicationContext,
             binding.rvSearch,
             binding.groupSearch,
             binding.indicatorSearch,
@@ -86,11 +88,7 @@ class SearchActivity : BaseActivity() {
             binding.rvSearch.visibility = View.VISIBLE
             binding.rvSearch.apply {
                 adapter = CourseRecyclerAdapter(CourseRecyclerAdapter.OnClickListener { course ->
-                    Helpers.downloadFile(
-                        applicationContext,
-                        course.title!!,
-                        course.question!!
-                    )
+                    courseBundle(applicationContext, course)
                 }, results)
                 layoutManager = LinearLayoutManager(
                     context,

@@ -7,7 +7,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Preview">
+        tools:context=".activities.fragments.Preview">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
@@ -30,7 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_16"
-                    android:text="@string/confirm_details"
+                    android:text="@string/confirm"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -188,24 +188,35 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_upload"
                             style="@style/ButtonStyle"
-                            android:backgroundTint="@color/green"
-                            android:layout_width="@dimen/dimen_150"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_8"
+                            android:layout_marginEnd="@dimen/dimen_16"
+                            android:backgroundTint="@color/green"
                             android:text="@string/confirm"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline2"
                             app:layout_constraintStart_toStartOf="@+id/text_input_solution"
                             app:layout_constraintTop_toBottomOf="@+id/text_input_solution" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_cancel"
                             style="@style/ButtonStyle"
-                            android:backgroundTint="@color/red"
-                            android:layout_width="@dimen/dimen_150"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="@color/red"
                             android:text="@string/review"
+                            android:layout_marginStart="@dimen/dimen_16"
                             app:layout_constraintBottom_toBottomOf="@+id/button_upload"
                             app:layout_constraintEnd_toEndOf="@+id/text_input_solution"
+                            app:layout_constraintStart_toStartOf="@+id/guideline2"
                             app:layout_constraintTop_toTopOf="@+id/button_upload" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="205dp" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </ScrollView>
             </androidx.constraintlayout.widget.ConstraintLayout>

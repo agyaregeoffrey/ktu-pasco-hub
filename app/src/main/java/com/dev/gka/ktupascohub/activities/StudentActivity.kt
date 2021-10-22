@@ -17,7 +17,7 @@ import com.dev.gka.ktupascohub.utilities.PrefManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 
-class StudentActivity : BaseActivity(), View.OnCreateContextMenuListener {
+class StudentActivity : BaseActivity() {
     private lateinit var binding: ActivityStudentBinding
     private lateinit var firestore: FirebaseFirestore
 
@@ -34,8 +34,8 @@ class StudentActivity : BaseActivity(), View.OnCreateContextMenuListener {
     }
 
     private fun initFirebaseData() {
-        val level = collectionPath(PrefManager.getInstance(this).getStudentLevel()?.toInt())
-        courses = firestoreData(
+        val level = collectionPath(PrefManager.getInstance(applicationContext).getStudentLevel()?.toInt())
+        firestoreData(
             this.applicationContext,
             binding.rvStudent,
             binding.groupStud,
@@ -44,6 +44,10 @@ class StudentActivity : BaseActivity(), View.OnCreateContextMenuListener {
         )
     }
 
+    override fun onResume() {
+        initFirebaseData()
+        super.onResume()
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -69,15 +73,4 @@ class StudentActivity : BaseActivity(), View.OnCreateContextMenuListener {
         }
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_similar -> {
-                val intent = Intent(this, SimilarPapersActivity::class.java)
-                intent.putExtra(Constants.LECTURER, courses[item.groupId].lecturer)
-                startActivity(intent)
-                true
-            }
-            else -> super.onContextItemSelected(item)
-        }
-    }
 }

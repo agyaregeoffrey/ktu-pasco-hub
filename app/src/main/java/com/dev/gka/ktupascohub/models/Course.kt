@@ -1,6 +1,7 @@
 package com.dev.gka.ktupascohub.models
 
 import android.os.Parcelable
+import android.view.View
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
